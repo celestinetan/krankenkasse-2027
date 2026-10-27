@@ -507,8 +507,10 @@ const S={kt:'ZH',place:'',bins:'8',bded:300,paid:'597.60',pyear:2027,plz:'',bt:n
   spend:1500,hasGP:'yes',phoneOK:'yes',specialists:'no',age:'E',reg:1,work:'yes',acc:false,
   dedmode:'best',insf:'',models:{BASE:1,PRAXIS:1,TEL_DIG:1,FLEX:1},pins:[],showAll:false,chartPlan:'cur',perkins:'',
   lang:'de',lname:'',lnum:'',laddr:'',steps:{},fold:{}};
-try{const saved=JSON.parse(localStorage.getItem('kk27v2')||'null');if(saved)Object.assign(S,saved)}catch(e){}
-function save(){try{localStorage.setItem('kk27v2',JSON.stringify(S))}catch(e){}}
+try{const saved=JSON.parse(localStorage.getItem('kk27ch-1')||'null');if(saved)Object.assign(S,saved)}catch(e){}
+function tkey(id){const t=tariffById[id];return t?t.ins+'|'+t.code:null}
+function fromKey(k){const t=k&&tariffs.find(x=>x.ins+'|'+x.code===k);return t?t.id:null}
+function save(){try{if(tariffs.length){S.btKey=tkey(+S.bt);S.pinKeys=S.pins.map(tkey).filter(Boolean)}localStorage.setItem('kk27ch-1',JSON.stringify(S))}catch(e){}}
 
 function plzHits(){return S.plz.length===4?plz.filter(x=>x[0]===S.plz):[]}
 function regHint(){const h=plzHits().filter(x=>x[2]===S.kt);const regs=[...new Set(h.flatMap(x=>x[3]))];return regs.length===1?regs[0]:null}
@@ -778,6 +780,7 @@ async function boot(){
   try{
     const [tj,ij,pj]=await Promise.all(['data/tariffs.json','data/insurers.json','data/plz.json'].map(f=>fetch(f).then(r=>{if(!r.ok)throw new Error(f);return r.json()})));
     setTariffs(tj);INSURERS=Object.assign(ij,NICE_NAMES);plz=pj;
+    if(S.btKey)S.bt=fromKey(S.btKey);if(S.pinKeys)S.pins=S.pinKeys.map(fromKey).filter(x=>x!=null);
     try{RESTRICT=await fetch('data/restricted.json').then(r=>r.ok?r.json():{})}catch(e){RESTRICT={}}
     fetch('data/meta.json').then(r=>r.json()).then(m=>{$('databuilt').textContent='Data files built '+m.built+'.'}).catch(()=>{});
     await loadCanton(S.kt||'ZH');

@@ -1,0 +1,783 @@
+<title>Krankenkasse 2027 Schweiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: four numbered steps on the left (your plan, your bills, how you see doctors, about you); the answer and the evidence on the right. Stacks on phones. Ink on cool paper, petrol accent, numbers in mono. */
+:root{
+  --bg:#F3F5F6; --surface:#FFFFFF; --sunk:#E9EDEF; --ink:#15202B; --muted:#5A6772; --line:#D8DFE3;
+  --accent:#0F5C6E; --accent-ink:#FFFFFF; --accent-soft:#E1EEF1;
+  --good:#1D7A4C; --good-soft:#E3F3EA; --warn:#9A6300; --warn-soft:#FBF0DA; --bad:#B3261E; --bad-soft:#FBE7E5;
+  --c1:#0F5C6E; --c2:#2F7FD0; --c3:#6E9A2E; --c4:#C2751D; --c5:#B0407A; --c6:#5C5E99;
+  --display:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1417; --surface:#151D21; --sunk:#1B252A; --ink:#E5EBEE; --muted:#93A2AB; --line:#283439;
+  --accent:#5BC0D4; --accent-ink:#06262E; --accent-soft:#12313A;
+  --good:#5CC991; --good-soft:#15322A; --warn:#E3AE4B; --warn-soft:#352A12; --bad:#F2786E; --bad-soft:#3A1C1A;
+  --c1:#5BC0D4; --c2:#7AB2F2; --c3:#A5CC5E; --c4:#EDA65A; --c5:#E57DB4; --c6:#A3A6E6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1417; --surface:#151D21; --sunk:#1B252A; --ink:#E5EBEE; --muted:#93A2AB; --line:#283439;
+  --accent:#5BC0D4; --accent-ink:#06262E; --accent-soft:#12313A;
+  --good:#5CC991; --good-soft:#15322A; --warn:#E3AE4B; --warn-soft:#352A12; --bad:#F2786E; --bad-soft:#3A1C1A;
+  --c1:#5BC0D4; --c2:#7AB2F2; --c3:#A5CC5E; --c4:#EDA65A; --c5:#E57DB4; --c6:#A3A6E6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700}
+h3{font-size:1rem;font-weight:600}
+p{margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)} .small{font-size:.86rem}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.mast{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mast .lede{max-width:60ch;color:var(--muted);margin-top:8px}
+.deadline{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.deadline .days{font-family:var(--mono);font-size:1.9rem;font-weight:500;line-height:1;color:var(--accent)}
+.deadline .lbl{font-size:.82rem;line-height:1.3}
+
+.grid{display:grid;grid-template-columns:330px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:minmax(0,1fr)}}
+.rail{display:flex;flex-direction:column;gap:14px}
+.main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.step{display:flex;gap:10px;align-items:baseline}
+.step .n{font-family:var(--mono);font-size:.8rem;color:var(--accent-ink);background:var(--accent);border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;flex:none}
+.field{display:flex;flex-direction:column;gap:5px}
+.field > label,.flabel{font-size:.84rem;font-weight:600}
+.hint{font-size:.8rem;color:var(--muted);line-height:1.4}
+input[type=text],input[type=number],select{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input[type=number]{font-family:var(--mono)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.chipbtn{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:.84rem;cursor:pointer}
+.seg button[aria-pressed="true"],.chipbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choices button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 12px;cursor:pointer;gap:1px}
+.choices button span{font-size:.78rem;color:var(--muted)}
+.choices button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:.86rem}
+.check input{margin-top:3px;accent-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+details summary{cursor:pointer;font-size:.84rem;color:var(--accent);font-weight:600}
+details[open] summary{margin-bottom:8px}
+.note{border-radius:8px;padding:9px 11px;font-size:.84rem;line-height:1.45}
+.note.warn{background:var(--warn-soft);border-left:3px solid var(--warn)}
+.note.good{background:var(--good-soft);border-left:3px solid var(--good)}
+.note.info{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.note.bad{background:var(--bad-soft);border-left:3px solid var(--bad)}
+
+/* verdict */
+.verdict{border:2px solid var(--accent);border-radius:14px;background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:16px}
+.vhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start}
+.vhead .say{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.5rem);font-weight:700;line-height:1.25;max-width:40ch;text-wrap:balance}
+.vsave{text-align:right}
+.vsave .v{font-family:var(--mono);font-size:1.8rem;line-height:1;color:var(--good)}
+.vsave .s{font-size:.8rem;color:var(--muted)}
+.actions{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.chk{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg);min-width:0}
+.chk .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.do{background:var(--accent);color:var(--accent-ink)}
+.pill.ok{background:var(--good-soft);color:var(--good)}
+.pill.opt{background:var(--warn-soft);color:var(--warn)}
+.chk .fig{font-family:var(--mono);font-size:1.05rem;overflow-wrap:anywhere}
+.chk p{font-size:.88rem}
+
+/* plans */
+.listhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px}
+.plans{display:flex;flex-direction:column}
+.plan{display:grid;grid-template-columns:30px minmax(0,2.4fr) 86px 100px 112px 120px 40px;gap:10px;align-items:center;padding:11px 8px;border-top:1px solid var(--line)}
+.plan.head{border-top:0;padding-block:4px 8px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.plan.head > div{text-align:right}.plan.head > div:nth-child(1),.plan.head > div:nth-child(2){text-align:left}
+.plan .r{text-align:right}
+.plan.base{background:var(--accent-soft);border-radius:8px;border-top-color:transparent}
+.plan.base + .plan{border-top-color:transparent}
+.plan.poor{opacity:.55}
+.rank{font-family:var(--mono);color:var(--muted);font-size:.85rem}
+.pname{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pname .ins{font-weight:600}
+.pname .mdl{font-size:.86rem}
+.pname .rule{font-size:.78rem;color:var(--muted)}
+.pname .fitn{font-size:.78rem;color:var(--warn)}
+.plan.poor .pname .fitn{color:var(--bad)}
+.tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:1px;background:var(--sunk);color:var(--muted)}
+.tag.you{background:var(--ink);color:var(--bg)}
+.cell-big{font-family:var(--mono);font-size:1rem;font-weight:500}
+.cell-sub{font-size:.76rem;color:var(--muted)}
+.delta.up{color:var(--bad)} .delta.down{color:var(--good)} .delta.flat{color:var(--muted)}
+.vsb{font-family:var(--mono);font-size:.84rem}
+.vsb.save{color:var(--good)} .vsb.more{color:var(--bad)}
+.pin{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);cursor:pointer;display:grid;place-items:center}
+.pin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pin svg{width:16px;height:16px}
+.lbl-m{display:none}
+@media (max-width:760px){
+  .plan.head{display:none}
+  .plan{grid-template-columns:26px minmax(0,1fr) 40px;grid-template-areas:"rk nm pn" ". ded ded" ". prem prem" ". yoy yoy" ". tco tco";row-gap:4px}
+  .plan > .rank{grid-area:rk}.plan > .pname{grid-area:nm}.plan > .pinc{grid-area:pn}
+  .plan > .c-ded{grid-area:ded}.plan > .c-prem{grid-area:prem}.plan > .c-yoy{grid-area:yoy}.plan > .c-tco{grid-area:tco}
+  .plan .r{text-align:left;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .lbl-m{display:inline;font-size:.74rem;color:var(--muted);min-width:110px}
+}
+.morebtn{align-self:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;margin-top:10px}
+
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.ccard{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--bg)}
+.ccard.base{border-color:var(--accent)}
+.ccard dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:.86rem}
+.ccard dt{color:var(--muted)} .ccard dd{margin:0;text-align:right;font-family:var(--mono)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:14px;color:var(--muted);font-size:.86rem}
+
+.chartwrap{overflow-x:auto}
+svg.chart{display:block;width:100%;min-width:520px;height:auto}
+.chart text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.chart .grid line{stroke:var(--line)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+.perkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.perkcat{display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--ink);padding-top:8px;min-width:0}
+.perk{font-size:.86rem;display:flex;flex-direction:column;gap:2px}
+.perk .prod{font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.perk .cond{font-size:.78rem;color:var(--muted)}
+
+.steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem}
+.steps input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px}
+.letter{white-space:pre-wrap;font-family:var(--mono);font-size:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;max-height:340px;overflow:auto}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+/* tabs */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin-top:-8px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;padding:12px 14px 10px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs a:hover{color:var(--ink)}
+.tabpanel{display:flex;flex-direction:column;gap:20px}
+.stephead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.editbtn{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:4px 12px;font-size:.82rem;cursor:pointer;color:var(--accent);font-weight:600;flex:none}
+.stepsum{font-size:.88rem;margin:-4px 0 0 32px}
+.sbody{display:flex;flex-direction:column;gap:12px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:7px 12px;text-decoration:none;font-weight:600;font-size:.86rem}
+.links a.primary{background:var(--accent);color:var(--accent-ink)}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:no-preference){.plan,.pin,.seg button,.choices button{transition:background-color .15s ease}}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="eyebrow">Basic health insurance (Grundversicherung) · All 26 cantons · 2027</div>
+      <h1>Krankenkasse 2027 Schweiz</h1>
+      <p class="lede">Answer four quick questions and see what the numbers suggest for 2027: keep your plan, change your deductible, change model, or switch insurer. Every price is the official 2027 premium from the Federal Office of Public Health.</p>
+      <p class="hint" style="margin-top:6px">Information tool, not advice · Prices: FOPH, published 29 Sep 2026 · Perks checked 27 Oct 2026 · Version 2.0 · <a href="#about">About this page</a></p>
+    </div>
+    <div class="deadline" id="deadline"></div>
+  </header>
+  <nav class="tabs" aria-label="Sections" id="tabs">
+    <a href="#answer" data-tab="answer">My answer</a><a href="#compare" data-tab="compare">Compare plans</a><a href="#perks" data-tab="perks">Perks</a><a href="#switch" data-tab="switch">Switch</a><a href="#about" data-tab="about">About</a>
+  </nav>
+
+  <div class="tabpanel" id="tab-answer" data-panel="answer">
+  <div class="grid">
+    <aside class="rail">
+      <section class="panel" aria-labelledby="h-s1">
+        <div class="stephead"><div class="step"><span class="n">1</span><h2 id="h-s1">Your plan now</h2></div><button type="button" class="editbtn" id="t1" aria-expanded="true" aria-controls="b1">Done</button></div><p class="stepsum" id="sum1" hidden></p><div class="sbody" id="b1">
+        <div class="field">
+          <label for="kt">Your canton</label>
+          <select id="kt"></select>
+        </div>
+        <div class="field">
+          <label for="bins">Your insurer</label>
+          <select id="bins"></select>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="bded">Deductible</label>
+            <select id="bded"></select>
+          </div>
+          <div class="field">
+            <label for="paid">You pay, CHF/month</label>
+            <input id="paid" type="number" step="0.05" min="0" placeholder="e.g. 480.35">
+          </div>
+        </div>
+        <div class="hint">Basic insurance only (KVG/LAMal). Leave out extras such as TOP, SANA or hospital cover. Your insurer's app or bill shows it on its own line.</div>
+        <div class="seg" id="pyear" role="group" aria-label="Which year is this amount from">
+          <button type="button" data-v="2026">From my 2026 bill</button><button type="button" data-v="2027">From my 2027 letter</button>
+        </div>
+        <div class="field">
+          <label for="plz">Postcode <span class="muted" style="font-weight:400">(sets canton and region)</span></label>
+          <input id="plz" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 8004" autocomplete="postal-code">
+        </div>
+        <div id="finder"></div>
+        <details id="manual">
+          <summary>Set my plan by hand</summary>
+          <div class="field">
+            <label for="bmodel">Model</label>
+            <select id="bmodel"></select>
+          </div>
+        </details></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s2">
+        <div class="stephead"><div class="step"><span class="n">2</span><h2 id="h-s2">Your doctor bills in a year</h2></div><button type="button" class="editbtn" id="t2" aria-expanded="true" aria-controls="b2">Done</button></div><p class="stepsum" id="sum2" hidden></p><div class="sbody" id="b2">
+        <p class="hint">Think of a normal year: what doctors, pharmacy and hospital billed in total. Your insurer's yearly statement shows it.</p>
+        <div class="choices" id="preset">
+          <button type="button" data-v="300">Only check-ups<span>under CHF 500 a year</span></button>
+          <button type="button" data-v="1500">A few visits<span>about CHF 1,500 a year</span></button>
+          <button type="button" data-v="4000">Regular treatment<span>about CHF 4,000 a year</span></button>
+          <button type="button" data-v="8500">I always hit the CHF 700 cap<span>CHF 7,500 or more a year; you pay the full deductible and the maximum co-pay</span></button>
+        </div>
+        <details>
+          <summary>Fine-tune: <span id="spendval" class="num"></span></summary>
+          <input id="spend" type="range" min="0" max="12000" step="100" aria-label="Yearly doctor bills in CHF">
+        </details></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s3">
+        <div class="stephead"><div class="step"><span class="n">3</span><h2 id="h-s3">How you like to see doctors</h2></div><button type="button" class="editbtn" id="t3" aria-expanded="true" aria-controls="b3">Done</button></div><p class="stepsum" id="sum3" hidden></p><div class="sbody" id="b3">
+        <p class="hint">Cheaper models come with rules. Your answers flag the ones that would not suit you.</p>
+        <div class="q"><span class="flabel">Do you have a GP you want to keep?</span><div class="seg" id="hasGP" role="group" aria-label="Have a GP"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div>
+        <div class="q"><span class="flabel">Are you OK phoning a hotline or using an app before every visit?</span><div class="seg" id="phoneOK" role="group" aria-label="Phone first"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div>
+        <div class="q"><span class="flabel">Do you see specialists often?</span><div class="seg" id="specialists" role="group" aria-label="Specialists"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s4">
+        <div class="stephead"><div class="step"><span class="n">4</span><h2 id="h-s4">About you</h2></div><button type="button" class="editbtn" id="t4" aria-expanded="true" aria-controls="b4">Done</button></div><p class="stepsum" id="sum4" hidden></p><div class="sbody" id="b4">
+        <div class="q"><span class="flabel">Age</span><div class="seg" id="age" role="group" aria-label="Age"><button type="button" data-v="E">26 or older</button><button type="button" data-v="J">19 to 25</button></div></div>
+        <div class="q" id="regwrap"><span class="flabel">Premium region</span><div class="seg" id="region" role="group" aria-label="Premium region"></div></div><div class="hint" id="reghint"></div>
+        <div class="q"><span class="flabel">Do you work 8+ hours a week for one employer?</span><div class="seg" id="work" role="group" aria-label="Employment"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div>
+          <label class="check" for="acc"><input type="checkbox" id="acc"> <span>Include accident cover</span></label>
+          <div class="hint" id="acchint"></div></div></div>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="verdict" aria-labelledby="h-verdict" id="verdict"></section>
+    </main>
+  </div>
+  </div>
+  <div class="tabpanel" id="tab-compare" data-panel="compare" hidden>
+<section class="panel" aria-labelledby="h-plans">
+        <div class="listhead">
+          <div>
+            <h2 id="h-plans">All plans, cheapest first</h2>
+            <p class="small muted" id="plansub"></p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="field" style="min-width:170px"><label for="insf">Insurer</label><select id="insf"></select></div>
+            <div class="field" style="min-width:170px"><label for="dedmode">Deductible</label><select id="dedmode"></select></div>
+          </div>
+        </div>
+        <div class="field"><span class="flabel">Models</span><div class="seg" id="models" role="group" aria-label="Model filter"></div></div>
+        <div class="plans" id="plans"></div>
+        <button type="button" class="morebtn" id="more"></button>
+      </section>
+<section class="panel" aria-labelledby="h-cmp">
+        <h2 id="h-cmp">Side by side</h2>
+        <p class="small muted">Tap the pin on up to 4 plans to compare them with yours.</p>
+        <div class="cmp" id="cmp"></div>
+      </section>
+<section class="panel" aria-labelledby="h-chart">
+        <div class="listhead">
+          <div>
+            <h2 id="h-chart">Which deductible pays off?</h2>
+            <p class="small muted">Yearly cost of one plan at each deductible as bills grow. The dashed line is your answer to step 2.</p>
+          </div>
+          <div class="field" style="min-width:220px"><label for="chartplan">Plan</label><select id="chartplan"></select></div>
+        </div>
+        <div class="chartwrap"><svg class="chart" id="chart" viewBox="0 0 760 340" role="img" aria-label="Yearly cost by deductible"></svg></div>
+        <div class="legend" id="legend"></div>
+        <p class="small" id="chartnote"></p>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-perks" data-panel="perks" hidden>
+<section class="panel" aria-labelledby="h-perks">
+        <div class="listhead">
+          <div>
+            <h2 id="h-perks">Perks and extras</h2>
+            <p class="small muted">Gym, massage, glasses and similar come from extras (supplementary insurance), never from basic. Extras and basic can be with different insurers.</p>
+          </div>
+          <div class="field" style="min-width:200px"><label for="perkins">Insurer</label><select id="perkins"></select></div>
+        </div>
+        <div id="perks"></div>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-switch" data-panel="switch" hidden>
+<section class="panel" aria-labelledby="h-switch">
+        <h2 id="h-switch">How to switch for 2027</h2>
+        <div class="two">
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <ul class="steps" id="steps"></ul>
+            <div class="note info">Your old basic insurance only ends once the new insurer confirms you are covered. Nothing lapses in between.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <div class="row2">
+              <div class="field"><label for="lname">Your name</label><input id="lname" type="text" autocomplete="name"></div>
+              <div class="field"><label for="lnum">Policy number</label><input id="lnum" type="text"></div>
+            </div>
+            <div class="field"><label for="laddr">Your address</label><input id="laddr" type="text" autocomplete="street-address" placeholder="Street, postcode, town"></div>
+            <div class="seg" id="lang" role="group" aria-label="Letter language"><button type="button" data-v="de">German (send this)</button><button type="button" data-v="en">English translation</button></div>
+            <div class="letter" id="letter"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" class="btn" id="copy">Copy letter</button><span class="small muted" id="copied" role="status"></span></div>
+            <p class="hint">Send it by registered post (Einschreiben) or A-Post Plus so it arrives by 30 November. Check the address against your policy. Your details stay in this browser.</p>
+          </div>
+        </div>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-about" data-panel="about" hidden>
+<section class="panel" aria-labelledby="h-about">
+        <h2 id="h-about">About this page</h2>
+        <div class="two">
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0;max-width:65ch">
+            <div><h3>What it is</h3><p class="small">A free, independent tool that compares the official 2027 basic health insurance premiums in all 26 Swiss cantons and works out what a year would cost for the answers you give. It is not affiliated with any health insurer or with the Federal Office of Public Health, earns no commissions and does not arrange insurance. Insurer names and trademarks belong to their owners.</p></div>
+            <div><h3>Not advice</h3><p class="small">Everything here is general information, not insurance, financial, legal or medical advice. The suggestions follow fixed rules applied to official prices. They don't know your full situation, your doctors or your health, and you make the decision. Before you change anything, check the figures on <a href="https://www.priminfo.admin.ch/de/praemien" target="_blank" rel="noopener">priminfo.admin.ch</a> or with the insurer. The insurer's own documents and terms always take precedence.</p></div>
+            <div><h3>No guarantee</h3><p class="small">The page was built with care, but the figures, rules and perk details may be incomplete, out of date or wrong. Use it at your own risk. To the extent the law allows, the author accepts no liability for losses or decisions based on this page. By using it, you agree to hold the author harmless from any claim arising from your use of it.</p></div>
+            <div><h3>Your privacy</h3><p class="small">What you type, including your premium and the letter details, is stored only in this browser so the page remembers it. Nothing is sent to the author or anyone else. Clearing this site's data in your browser removes it.</p></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0;max-width:65ch">
+            <div><h3>Known limits</h3><ul class="small" style="margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px">
+              <li>All 26 cantons, for ages 19 to 25 and 26+. Children are not included. The page is in English, with German terms.</li>
+              <li>Yearly cost uses the legal adult rules for deductible and the 10% co-pay (capped at CHF 700). The CHF 15/day hospital contribution is left out.</li>
+              <li>Matching what you pay to a plan allows for the CO2 levy refund of about CHF 5 a month on 2026 bills. Discounts or special policies can stop a match.</li>
+              <li>Whether a model "suits you" rests on three simple questions. Every insurer's model has its own detailed rules.</li>
+              <li>Deadlines: changing insurer or lowering a deductible must reach your insurer by 30 November. Other changes can differ by insurer.</li>
+              <li>Perks come from insurers' public pages and cover 13 insurers. Some documents are from 2025 or earlier.</li>
+            </ul></div>
+            <div><h3>Sources and version</h3><p class="small">Premiums: FOPH dataset "Krankenversicherungsprämien" on opendata.swiss, 2027 and 2026, all cantons, published 29 September 2026. Premium regions: priminfo.admin.ch, valid from 1 January 2027. Insurer names: FOPH list of admitted insurers. Perks: checked 27 October 2026. Version 2.0.</p></div>
+            <div><h3>Spotted a mistake?</h3><p class="small">Please report it so it can be fixed: <span class="num" id="contact" style="user-select:all"></span></p></div>
+          </div>
+        </div>
+      </section>
+  </div>
+  <footer>
+        <p><strong>Data:</strong> Federal Office of Public Health (BAG/FOPH), approved premiums for 2027 and 2026 in all 26 cantons, dataset "Krankenversicherungsprämien" on opendata.swiss, published 29 September 2026. Premium regions by postcode from priminfo.admin.ch, valid from 1.1.2027. Insurer names from the FOPH list of admitted insurers. <span id="databuilt"></span></p>
+        <p><strong>How yearly cost is worked out:</strong> 12 months of premium, plus your bills up to the deductible, plus 10% of the rest up to CHF 700 a year (legal adult rules). The CHF 15/day hospital contribution is left out because it is the same everywhere. Bills on 2026 statements are reduced by the CO2 levy refund, about CHF 5 a month, which is why your bill can be a little lower than the listed premium.</p>
+        <p><strong>How the suggestions work:</strong> fixed rules on the official prices. A switch saving under CHF 100 a year is shown as a tiny saving, CHF 100 to 300 as a small saving. Models you said would not suit you are never recommended. Year-on-year change compares the same model at the same deductible; renamed or new models show "new".</p>
+        <p><strong>Perks:</strong> collected in October 2026 from each insurer's own pages, linked beside every entry. Some documents are from 2025 or earlier and insurers change extras every year, so confirm amounts before relying on them. Smaller insurers are not covered yet.</p>
+        <p>This page is an information tool, not insurance or financial advice. <a href="#about">About this page, limits and privacy</a>. Check the final figure on <a href="https://www.priminfo.admin.ch/de/praemien" target="_blank" rel="noopener">priminfo.admin.ch</a> or with the insurer before you switch.</p>
+      </footer>
+</div>
+
+<script>
+const PERKS = [{"insurer": "Helsana", "product": "TOP", "category": "glasses", "benefit": "90% of glasses/contact lens costs, max CHF 150 per calendar year", "conditions": "No prescription needed if optician invoice shows dioptres", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/top.html"}, {"insurer": "Helsana", "product": "TOP", "category": "other", "benefit": "Emergency treatment abroad: 100% of costs above basic insurance (outpatient and inpatient); transport to nearest suitable hospital abroad fully covered; rescue/transport in CH up to CHF 100,000/year", "conditions": "Outside EU/EFTA/UK you pay the Swiss deductible and co-pay; planned treatment abroad not covered", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/top.html"}, {"insurer": "Helsana", "product": "TOP", "category": "other", "benefit": "90% of prescribed medicines not covered by basic insurance; 90% of prescribed aids (e.g. insoles, blood pressure monitors) up to CHF 1,000/year; special treatments (non-medical psychotherapy, vasectomy) 75% up to CHF 3,000/year", "conditions": "", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/top.html"}, {"insurer": "Helsana", "product": "TOP", "category": "other", "benefit": "Orthodontics and wisdom-tooth removal: 75% up to CHF 10,000/year", "conditions": "Only until age 20", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/top.html"}, {"insurer": "Helsana", "product": "SANA", "category": "alt_medicine", "benefit": "75% of outpatient complementary medicine treatment (about 70 methods), no annual cap stated; 75% of complementary remedies", "conditions": "Must be medically necessary (not stress/fatigue/prevention); therapist must be Helsana-recognised (EMR-based); no deductible", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/sana.html"}, {"insurer": "Helsana", "product": "SANA", "category": "massage", "benefit": "Medical massage is reimbursed as a recognised complementary method at 75%, with no separate cap stated", "conditions": "Recognised therapist; illness-related only", "source": "https://www.helsana.ch/dam/de/pdf/private/broschueren/ambulante-zusatzversicherungen.pdf"}, {"insurer": "Helsana", "product": "SANA", "category": "fitness", "benefit": "75% of gym memberships and courses (e.g. aquafit, gymnastics), max CHF 200 per calendar year", "conditions": "Gym and course instructors must be Helsana-recognised", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/sana.html"}, {"insurer": "Helsana", "product": "SANA", "category": "prevention", "benefit": "75% of vaccinations, smoking cessation, cancer and cardiovascular screening, max CHF 500 per calendar year", "conditions": "Recognised measures list applies", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/sana.html"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "fitness", "benefit": "75% of gym memberships and courses (aqua fitness, gymnastics, first aid), max CHF 200 per calendar year", "conditions": "Recognised providers only", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/completa.html"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "alt_medicine", "benefit": "75% of outpatient complementary medicine, no annual cap stated; 75% of complementary remedies; special treatments 75% up to CHF 4,500/year", "conditions": "Helsana-recognised methods and therapists", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/completa.html"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "massage", "benefit": "Medical massage is covered as a recognised complementary method at 75%, with no separate cap stated", "conditions": "Recognised therapist", "source": "https://www.helsana.ch/dam/de/pdf/private/broschueren/ambulante-zusatzversicherungen.pdf"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "glasses", "benefit": "90% of glasses/contact lenses, max CHF 300 per calendar year", "conditions": "", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/completa.html"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "prevention", "benefit": "90% of vaccinations, smoking cessation and cancer/cardiovascular screening, max CHF 750 per calendar year", "conditions": "", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/completa.html"}, {"insurer": "Helsana", "product": "COMPLETA", "category": "other", "benefit": "Emergency care abroad 100% above basic insurance; aids 90% up to CHF 1,500/year; orthodontics up to age 20 at 75%, max CHF 10,000/year; search operation 100% up to CHF 30,000", "conditions": "", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/ambulant/completa.html"}, {"insurer": "Helsana", "product": "TOP, SANA, COMPLETA", "category": "other", "benefit": "Helsana+ app bonus points (Helsana says worth over CHF 300/year); family discount 5% for 2 people, 10% for 3+; 3% multi-year discount on a 3-year contract", "conditions": "Multi-year discount for new customers only", "source": "https://www.helsana.ch/dam/de/pdf/private/broschueren/ambulante-zusatzversicherungen.pdf"}, {"insurer": "Helsana", "product": "HOSPITAL Semi-private", "category": "other", "benefit": "2-bed semi-private room 100% in Switzerland with free choice of recognised hospital and doctor; CHF 1,000 flat refund if you stay 3+ nights in the general ward; second opinion, fast track, household help", "conditions": "Some hospitals and doctors excluded; emergency abroad up to CHF 1,500/day", "source": "https://www.helsana.ch/de/private/versicherungen/zusatzversicherungen/spitalversicherung/hospital-halbprivat.html"}, {"insurer": "CSS", "product": "myFlex health account", "category": "fitness", "benefit": "50% of gym, fitness classes, dance and movement courses. Yearly total: Economy CHF 300, Balance CHF 500, Premium CHF 700", "conditions": "Tier follows your myFlex hospital tier; recognised providers; sports-club bonus 50% up to CHF 100 with Balance/Premium", "source": "https://consent-rm1.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/produktblatt/505_d_merkblatt_gesundheitskonto.pdf"}, {"insurer": "CSS", "product": "myFlex alternative", "category": "alt_medicine", "benefit": "75% of about 80 recognised methods; yearly cap Economy CHF 1,000, Balance CHF 3,000, Premium CHF 10,000", "conditions": "CSS-recognised therapist; no referral or deductible needed", "source": "https://www.css.ch/de/privatkunden/richtig-versichert/krankenkasse/zusatzversicherungen/alternativversicherung.html"}, {"insurer": "CSS", "product": "myFlex alternative", "category": "massage", "benefit": "Massage at 75%: max CHF 200 (Economy), CHF 600 (Balance), CHF 2,000 (Premium) per year", "conditions": "Recognised therapist; figures from a 2023 brochure, not confirmed for 2027", "source": "https://consent-rm1.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/produktblatt/517_d_produktblatt_myflex_broschuere.pdf"}, {"insurer": "CSS", "product": "myFlex outpatient", "category": "glasses", "benefit": "Adults: Balance CHF 150/year, Premium CHF 300/year; Economy nothing", "conditions": "Since 2026 frames are covered only together with corrective lenses", "source": "https://www.css.ch/de/privatkunden/schnell-erledigt/hilfe-erhalten/leistungscheck/brille.html"}, {"insurer": "CSS", "product": "myFlex outpatient", "category": "prevention", "benefit": "Vaccinations 90% (Economy max CHF 100/year; Balance/Premium unlimited). Check-up every 3 years: Balance 80% up to CHF 720, Premium 100% up to CHF 1,800", "conditions": "Check-up needs myFlex hospital Balance/Premium too; figures from a 2023 brochure", "source": "https://consent-rm1.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/produktblatt/517_d_produktblatt_myflex_broschuere.pdf"}, {"insurer": "CSS", "product": "myFlex outpatient", "category": "other", "benefit": "Emergency abroad (outpatient 90%, inpatient unlimited); wisdom teeth (age 19+) 50% up to CHF 1,000 (Balance) or CHF 2,000 (Premium)", "conditions": "Figures from a 2023 brochure", "source": "https://consent-rm1.css.ch/content/dam/css/de/documents/privatkunden/richtig-versichert/produktblatt/517_d_produktblatt_myflex_broschuere.pdf"}, {"insurer": "CSS", "product": "Any CSS supplementary", "category": "other", "benefit": "active365 app: earn up to CHF 400 per year in points, paid out or redeemed", "conditions": "Requires a CSS supplementary policy", "source": "https://www.active365.css.ch/"}, {"insurer": "SWICA", "product": "COMPLETA FORTE", "category": "fitness", "benefit": "90% of fitness, nutrition, relaxation and prevention courses, max CHF 500/year (CHF 300 per category)", "conditions": "SWICA-recognised providers; gym subscription at least 3 months", "source": "https://www4.swica.ch/p/032_d_Gesundheitsfoerderung_Praevention.pdf"}, {"insurer": "SWICA", "product": "PRAEVITA add-on", "category": "fitness", "benefit": "Extra 50% of health-promotion and fitness costs up to CHF 500/year; with OPTIMA up to CHF 1,300/year combined", "conditions": "PRAEVITA only with COMPLETA TOP or FORTE", "source": "https://www4.swica.ch/p/032_d_Gesundheitsfoerderung_Praevention.pdf"}, {"insurer": "SWICA", "product": "PRAEVITA add-on", "category": "prevention", "benefit": "Vaccinations 90% up to CHF 200/year; check-ups 90% up to CHF 500 per 3 years", "conditions": "Itemised bill needed; flat-rate packages generally not covered", "source": "https://www4.swica.ch/p/032_d_Gesundheitsfoerderung_Praevention.pdf"}, {"insurer": "SWICA", "product": "COMPLETA TOP / FORTE", "category": "alt_medicine", "benefit": "Complementary medicine up to CHF 80/hour (TOP) or CHF 120/hour (FORTE); no yearly cap stated", "conditions": "Recognised therapists; 10% co-pay up to CHF 700", "source": "https://dam.swica.ch/image/upload/v1773849463/033_d_Komplementaermedizin_y9uv9e.pdf"}, {"insurer": "SWICA", "product": "COMPLETA TOP / FORTE", "category": "massage", "benefit": "Therapeutic massage and lymph drainage within the hourly caps (CHF 80/h TOP, CHF 120/h FORTE)", "conditions": "Must treat illness or accident effects", "source": "https://dam.swica.ch/image/upload/v1773849463/033_d_Komplementaermedizin_y9uv9e.pdf"}, {"insurer": "SWICA", "product": "COMPLETA TOP / FORTE", "category": "glasses", "benefit": "90% of glasses/contact lenses: TOP up to CHF 200 per 3 years, FORTE up to CHF 900 per 3 years", "conditions": "", "source": "https://dam.swica.ch/image/upload/v1775123217/541_d_Completa_zz1wig.pdf"}, {"insurer": "SWICA", "product": "COMPLETA TOP / FORTE", "category": "other", "benefit": "Emergency treatment and repatriation abroad; search and rescue up to CHF 50,000 (TOP) or CHF 150,000 (FORTE) a year", "conditions": "", "source": "https://dam.swica.ch/image/upload/v1775123217/541_d_Completa_zz1wig.pdf"}, {"insurer": "SWICA", "product": "BENEVITA app", "category": "other", "benefit": "Bonus programme: 5% premium discount on COMPLETA TOP/FORTE, up to 15% on HOSPITA hospital cover", "conditions": "Points-based; HOSPITA General excluded", "source": "https://www.swica.ch/en/kampagnen/swibeco/benevita"}, {"insurer": "Sanitas", "product": "Vital Smart / Premium", "category": "fitness", "benefit": "Smart: 50% up to CHF 200 or 300 for fitness; Premium: 80% up to CHF 400. Vital Basic: none", "conditions": "Gym must be Qualitop, QualiCert or Fitnessguide certified; at least 3 months membership or a 10-session pass", "source": "https://sanitas.com/en/private-customers/insurance/what-costs-does-sanitas-cover/fitness-massage.html"}, {"insurer": "Sanitas", "product": "Vital Smart / Premium", "category": "massage", "benefit": "80% of massages: Smart up to CHF 250 or 500, Premium up to CHF 750 a year", "conditions": "Only for illness of clinical significance; recognised therapist", "source": "https://sanitas.com/en/private-customers/insurance/what-costs-does-sanitas-cover/fitness-massage.html"}, {"insurer": "Sanitas", "product": "Vital Smart / Premium", "category": "alt_medicine", "benefit": "80% of complementary medicine: Smart up to CHF 2,500 or 5,000 a year, Premium up to CHF 10,000", "conditions": "Methods on the Sanitas list; registered therapists", "source": "https://www.sanitas.com/en/private-customers/insurance/supplementary-insurance-plans/outpatient-treatment.html"}, {"insurer": "Sanitas", "product": "Vital Basic / Smart / Premium", "category": "glasses", "benefit": "100% of glasses and lenses up to CHF 300 per 3 years (Basic, Smart) or CHF 600 (Premium)", "conditions": "", "source": "https://www.sanitas.com/en/private-customers/insurance/supplementary-insurance-plans/outpatient-treatment.html"}, {"insurer": "Sanitas", "product": "Vital Basic / Smart / Premium", "category": "prevention", "benefit": "80% of prevention: Basic up to CHF 500, Smart up to CHF 1,000 (adds check-ups, cancer screening), Premium up to CHF 1,500", "conditions": "Per Sanitas prevention list", "source": "https://www.sanitas.com/en/private-customers/insurance/supplementary-insurance-plans/outpatient-treatment.html"}, {"insurer": "Sanitas", "product": "Vital Basic / Smart / Premium", "category": "other", "benefit": "Worldwide emergency treatment 100% (up to 180 days) plus rescue and transport; non-covered medicines 90%", "conditions": "", "source": "https://www.sanitas.com/en/private-customers/insurance/supplementary-insurance-plans/outpatient-treatment.html"}, {"insurer": "Visana", "product": "Ambulant I/II/III or Basic", "category": "fitness", "benefit": "Up to CHF 350 a year towards gym memberships, group fitness courses and sauna, steam or thermal bath entries", "conditions": "Requires Ambulant or Basic supplementary cover (2027 benefits overview)", "source": "https://www.visana.ch/dam/jcr:90cf5403-3d00-4066-896b-311249af793a/leistungsuebersicht-versicherungsangebot-2026-ohne-viva-de.pdf"}, {"insurer": "Visana", "product": "myPoints app", "category": "other", "benefit": "Bonus programme paying up to CHF 120 a year for daily activity (steps, calories) and loyalty", "conditions": "Requires Visana supplementary insurance; syncs with Fitbit, Garmin, Apple Health and others", "source": "https://www.visana.ch/dam/jcr:90cf5403-3d00-4066-896b-311249af793a/leistungsuebersicht-versicherungsangebot-2026-ohne-viva-de.pdf"}, {"insurer": "Visana", "product": "Komplementär I / II / III", "category": "alt_medicine", "benefit": "90% of complementary treatment, up to CHF 1,000 (I), CHF 4,000 (II) or CHF 10,000 (III) a year; remedies also 90%", "conditions": "Level I needs a doctor's prescription; Visana-recognised therapist; yoga, tai chi and reiki excluded", "source": "https://www.visana.ch/dam/jcr:90cf5403-3d00-4066-896b-311249af793a/leistungsuebersicht-versicherungsangebot-2026-ohne-viva-de.pdf"}, {"insurer": "Visana", "product": "Ambulant I / II / III", "category": "glasses", "benefit": "90% of glasses or contact lenses, up to CHF 200 (I), 250 (II) or 500 (III); adults once every 3 years", "conditions": "Frames and fitting not covered; tier amounts differ slightly between 2024 and 2027 documents", "source": "https://www.visana.ch/dam/jcr:c4f4cb5f-312a-4121-a4dc-1b4d794fb177/ZB_Krankenzusatzversicherung_VVG_Ambulant_2024-01_de.pdf"}, {"insurer": "Visana", "product": "Ambulant I / II / III", "category": "prevention", "benefit": "Check-up every 3 years at 90%, up to CHF 200 (I), 300 (II) or 600 (III); vaccinations 90% up to CHF 100 (I) or 200 (II) a year, unlimited for III", "conditions": "", "source": "https://www.visana.ch/dam/jcr:90cf5403-3d00-4066-896b-311249af793a/leistungsuebersicht-versicherungsangebot-2026-ohne-viva-de.pdf"}, {"insurer": "Visana", "product": "Ambulant I/II/III, Basic", "category": "other", "benefit": "Vacanza travel cover included: emergency medical costs abroad without limit on trips up to 8 weeks, plus transport and search and rescue", "conditions": "Planned treatment abroad not covered", "source": "https://visana.ch/dam/jcr:6a351551-2b95-4c7d-8fdf-837e019839d9/factsheet-basic-a4-de-web.pdf"}, {"insurer": "Concordia", "product": "NATURA / NATURAplus", "category": "fitness", "benefit": "50% of fitness memberships or courses, up to CHF 200 a year; back and posture training separately with the same cap; up to CHF 500 a year across areas. NATURAplus adds a sports-club bonus", "conditions": "CONCORDIA-recognised offers only", "source": "https://www.concordia.ch/de/versicherungen/zusatzversicherungen/natura.html"}, {"insurer": "Concordia", "product": "NATURA / NATURAplus", "category": "alt_medicine", "benefit": "NATURA: naturopathy 75% up to CHF 4,000 a year, therapies such as osteopathy 75% up to CHF 1,500. NATURAplus: up to CHF 6,000 and CHF 2,000, plus yoga with recognised therapists", "conditions": "Recognised method and therapist; no deductible", "source": "https://www.concordia.ch/de/versicherungen/zusatzversicherungen/natura.html"}, {"insurer": "Concordia", "product": "NATURA / NATURAplus", "category": "prevention", "benefit": "Check-ups and preventive examinations at 90%, up to CHF 500 a year", "conditions": "CONCORDIA-recognised", "source": "https://www.concordia.ch/de/versicherungen/zusatzversicherungen/natura.html"}, {"insurer": "Concordia", "product": "DIVERSA / DIVERSAplus", "category": "glasses", "benefit": "Fixed contribution of CHF 150 (DIVERSA) or CHF 250 (DIVERSAplus), once every 3 years from age 18", "conditions": "", "source": "https://www.concordia.ch/en/versicherungen/zusatzversicherungen/diversa.html"}, {"insurer": "Concordia", "product": "DIVERSA / DIVERSAplus", "category": "prevention", "benefit": "90% of non-statutory vaccinations", "conditions": "", "source": "https://www.concordia.ch/en/versicherungen/zusatzversicherungen/diversa.html"}, {"insurer": "Concordia", "product": "DIVERSA / DIVERSAplus", "category": "other", "benefit": "Worldwide emergency cover with unlimited transport; dental contribution 50% (DIVERSA) or 75% (plus); non-listed medicines 50% or 75%", "conditions": "Which dental treatments qualify is not confirmed", "source": "https://www.concordia.ch/en/versicherungen/zusatzversicherungen/diversa.html"}, {"insurer": "KPT", "product": "Pulse Eco / Top / Premium", "category": "fitness", "benefit": "CHF 50 (Eco) or CHF 200 (Top) a year; Premium up to CHF 600: CHF 300 for fitness or yoga plus CHF 300 for a sports club", "conditions": "Provider on the KPT list; 2025 conditions", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-premium-de.pdf?vs=1"}, {"insurer": "KPT", "product": "Pulse Top / Premium", "category": "massage", "benefit": "75% of medical massage, up to CHF 250 (Top) or CHF 650 (Premium) a year", "conditions": "Doctor or EMR/ASCA-recognised therapist", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-top-de.pdf?vs=1"}, {"insurer": "KPT", "product": "Pulse Top / Premium", "category": "alt_medicine", "benefit": "75% of complementary treatment, up to CHF 2,000 (Top) or CHF 4,000 (Premium) a year after a CHF 100 deductible", "conditions": "Practitioner and method requirements apply", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-top-de.pdf?vs=1"}, {"insurer": "KPT", "product": "Pulse Top / Premium", "category": "glasses", "benefit": "Glasses or contacts up to CHF 250 (Top) or CHF 500 (Premium) per 3 years; Premium also CHF 600 per eye once for laser correction", "conditions": "365-day waiting period; Eco has no glasses benefit", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-premium-de.pdf?vs=1"}, {"insurer": "KPT", "product": "Pulse Eco / Top / Premium", "category": "prevention", "benefit": "Vaccinations 100% up to CHF 200 / 400 / 800 a year; listed check-ups 75% up to CHF 2,000 (Top) or CHF 4,000 (Premium)", "conditions": "Provider on KPT early-detection list", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-top-de.pdf?vs=1"}, {"insurer": "KPT", "product": "Pulse Eco / Top / Premium", "category": "other", "benefit": "Travel cover for up to 56 days a year abroad, including medical assistance, luggage and trip cancellation", "conditions": "No dental benefit", "source": "https://www.kpt.ch/-/media/kpt/portal/versicherungen/dokumente/zusatzversicherungen/bb-pulse-top-de.pdf?vs=1"}, {"insurer": "Atupri", "product": "Basic / Mivita Reala / Intense", "category": "fitness", "benefit": "Basic: 75% up to CHF 200 a year. Mivita Reala: 50% up to CHF 200. Intense: 75% up to CHF 500, including pool and sauna passes", "conditions": "No gym quality label required; membership at least 3 months", "source": "https://atupri.ch/de/spotlight/fitnessabo-krankenkasse"}, {"insurer": "Atupri", "product": "Mivita Reala", "category": "alt_medicine", "benefit": "50% of complementary medicine, up to CHF 1,500 a year", "conditions": "Method on the EMR list", "source": "https://atupri.ch/de/versicherungen/zusatzversicherungen/mivita"}, {"insurer": "Atupri", "product": "Intense", "category": "massage", "benefit": "Up to CHF 3,000 a year for massage and naturopathic treatments such as osteopathy and reflexology", "conditions": "Percentage not stated; shared cap with complementary medicine", "source": "https://atupri.ch/assets/f/253863/x/66d58e899f/atupri_prospekt_intense_d.pdf"}, {"insurer": "Atupri", "product": "Mivita Reala / Intense", "category": "glasses", "benefit": "Mivita Reala: 50% up to CHF 300 a year. Intense: 75% up to CHF 350, plus eye surgery up to CHF 1,500", "conditions": "", "source": "https://atupri.ch/de/spotlight/brille-kontaktlinsen"}, {"insurer": "Atupri", "product": "Basic / Mivita Reala / Intense", "category": "prevention", "benefit": "Vaccinations 90%; blood-test check-ups 90% up to CHF 200 a year; Intense up to CHF 500 for screenings", "conditions": "Basic check-ups via partner clinics only", "source": "https://atupri.ch/de/versicherungen/zusatzversicherungen/basic"}, {"insurer": "Atupri", "product": "Basic / Mivita Reala", "category": "other", "benefit": "Treatment abroad 100% with rescue and repatriation; psychotherapy 60% up to CHF 1,000 a year; 5% discount when basic insurance is also with Atupri", "conditions": "Adult dental only via the Denta add-on", "source": "https://atupri.ch/de/versicherungen/zusatzversicherungen/mivita"}, {"insurer": "Groupe Mutuel", "product": "Optimum", "category": "fitness", "benefit": "50% of sports club membership or approved sport and prevention activities, up to CHF 200 a year", "conditions": "Approved sports list only; the Start tier has no fitness cover", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen/Pflege-und-Praevention/Optimum.html"}, {"insurer": "Groupe Mutuel", "product": "Premium", "category": "fitness", "benefit": "50% of a yearly gym subscription up to CHF 500; sports club fees 90% up to CHF 200; ski or pool season passes also count", "conditions": "All prevention and sport benefits share one CHF 500 yearly cap", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen/Pflege-und-Praevention/premium.html"}, {"insurer": "Groupe Mutuel", "product": "Global smart", "category": "fitness", "benefit": "Health promotion and fitness 50%, up to CHF 200 a year at every level", "conditions": "Combined product that includes hospital cover", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Krankenzusatzversicherungen/Global-smart.html"}, {"insurer": "Groupe Mutuel", "product": "Optimum", "category": "massage", "benefit": "Massage up to CHF 500 a year, inside the alternative medicine budget", "conditions": "Counts toward the CHF 3,000 alternative medicine cap; recognised therapist", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen/Pflege-und-Praevention/Optimum.html"}, {"insurer": "Groupe Mutuel", "product": "Optimum / Premium", "category": "alt_medicine", "benefit": "Optimum: 75% up to CHF 3,000 a year, osteopathy included. Premium: 80% up to CHF 5,000 per 3 years", "conditions": "Recognised therapist; Premium figure from the overview page only", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen.html"}, {"insurer": "Groupe Mutuel", "product": "Global smart", "category": "alt_medicine", "benefit": "Level 1: 30% up to CHF 1,000; Level 2: 60% up to CHF 2,500; Level 3: 80% up to CHF 3,000 a year", "conditions": "", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Krankenzusatzversicherungen/Global-smart.html"}, {"insurer": "Groupe Mutuel", "product": "Start / Optimum / Premium", "category": "glasses", "benefit": "Adults: Start CHF 250 per 5 years, Optimum CHF 250 per 3 years, Premium CHF 500 per 3 years", "conditions": "Optician's invoice required", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen.html"}, {"insurer": "Groupe Mutuel", "product": "Start / Optimum / Premium", "category": "prevention", "benefit": "Health check-up at 90% per 3 years: up to CHF 600 (Start), CHF 1,200 (Optimum) or CHF 1,800 (Premium)", "conditions": "Groupe Mutuel's prevention list applies", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen.html"}, {"insurer": "Groupe Mutuel", "product": "Premium", "category": "other", "benefit": "Dental treatment 75% up to CHF 500 a year; contraception 90% up to CHF 500", "conditions": "", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Zusatzversicherungen/Pflege-und-Praevention/premium.html"}, {"insurer": "Groupe Mutuel", "product": "Global smart", "category": "other", "benefit": "Emergencies abroad up to CHF 200,000 a year with a 24/7 assistance line", "conditions": "", "source": "https://www.groupemutuel.ch/de/Privatkunden/Unsere-Produkte/Gesundheit/Krankenzusatzversicherungen/Global-smart.html"}, {"insurer": "Assura", "product": "Club Assura", "category": "fitness", "benefit": "No gym subsidy. Club Assura gives discounts, typically 20%, at partner gyms", "conditions": "Discount at partners only, not a reimbursement", "source": "https://www.assura.ch/de/club/angebote-im-bereich-sport"}, {"insurer": "Assura", "product": "Natura", "category": "alt_medicine", "benefit": "24 therapies (osteopathy, TCM, acupuncture and more): CHF 50 to 110 per session, 12 sessions a year; remedies up to CHF 800 a year", "conditions": "CHF 200 yearly deductible plus 10% co-pay; enrolment up to age 60", "source": "https://www.assura.ch/de/versicherungen/zusatzversicherungen/alternativmedizin"}, {"insurer": "Assura", "product": "Medna", "category": "alt_medicine", "benefit": "Complementary medicine from doctors (TCM, homeopathy and more): CHF 80 per session, unlimited sessions; remedies 80% up to CHF 2,000", "conditions": "Doctor with specialist training; CHF 200 deductible", "source": "https://www.assura.ch/de/versicherungen/zusatzversicherungen/alternativmedizin"}, {"insurer": "Assura", "product": "Natura", "category": "massage", "benefit": "Lymphatic drainage and reflexology are covered at the Natura session rates; no general massage benefit", "conditions": "Must have a therapeutic purpose", "source": "https://static.assura.ch/blue/cockpit-assets/2024/06/18/ASSURA_BVB-Natura_2015.07_D_uid_66715196a296f.pdf"}, {"insurer": "Assura", "product": "Complementa Extra", "category": "glasses", "benefit": "Adults CHF 100 a year, building up to CHF 500 over 5 years; same for laser eye surgery", "conditions": "Medically indicated lenses", "source": "https://www.assura.ch/de/versicherungen/zusatzversicherungen/erganzung-grundversicherung"}, {"insurer": "Assura", "product": "Complementa Extra", "category": "other", "benefit": "Non-listed vital medicines up to CHF 50,000; medical aids CHF 500 a year; dental only after serious illness or accident", "conditions": "No cover abroad (needs Mondia travel insurance)", "source": "https://www.assura.ch/de/versicherungen/zusatzversicherungen/erganzung-grundversicherung"}, {"insurer": "Assura", "product": "Mondia / Mondia Plus", "category": "other", "benefit": "Travel cover: unlimited treatment costs abroad on top of basic insurance, plus repatriation; Plus adds trip cancellation up to CHF 15,000", "conditions": "Trips up to 45 days", "source": "https://www.assura.ch/de/versicherungen/zusatzversicherungen/reise"}, {"insurer": "ÖKK", "product": "PREVENTION", "category": "fitness", "benefit": "50% of gym, pool or sports club fees: up to CHF 300 per area, CHF 500 a year in total; BikeBonus and NordicBonus pay 50% of cycling or cross-country ski costs up to CHF 300", "conditions": "Add-on to ÖKK START only", "source": "https://www.oekk.ch/en/private-clients/insurances/supplementary-insurance-policies/health-protection"}, {"insurer": "ÖKK", "product": "PREVENTION", "category": "prevention", "benefit": "Check-ups 90% up to CHF 300 a year; vaccinations 90% up to CHF 200", "conditions": "Add-on to ÖKK START only", "source": "https://www.oekk.ch/en/private-clients/insurances/supplementary-insurance-policies/health-protection"}, {"insurer": "ÖKK", "product": "NATURE MINI / MIDI / PLUS", "category": "alt_medicine", "benefit": "Recognised methods 80% up to CHF 1,000 / 5,000 / 10,000 a year; natural remedies 80% up to CHF 300 / 2,000 / 4,000", "conditions": "CHF 300 yearly deductible; add-on to ÖKK START", "source": "https://www.oekk.ch/en/private-clients/insurances/supplementary-insurance-policies/alternative-medicine-and-glasses"}, {"insurer": "ÖKK", "product": "START + NATURE", "category": "glasses", "benefit": "START: CHF 80 a year; more with NATURE PLUS, which also pays CHF 500 once for laser eye surgery", "conditions": "Exact amounts per tier not fully clear", "source": "https://www.oekk.ch/en/private-clients/insurances/supplementary-insurance-policies/alternative-medicine-and-glasses"}, {"insurer": "ÖKK", "product": "START", "category": "other", "benefit": "Emergency treatment abroad; rescue and repatriation up to CHF 50,000; non-listed medicines 90% up to CHF 20,000; psychotherapy 50% up to CHF 1,000; thermal baths 50%", "conditions": "Enrolment up to age 65", "source": "https://www.oekk.ch/en/private-clients/insurances/supplementary-insurance-policies/start-module"}, {"insurer": "Sympany", "product": "plus / premium", "category": "fitness", "benefit": "Gym, club sport, yoga, Pilates or climbing: up to CHF 200 (plus) or CHF 300 (premium) a year; health courses CHF 150 or CHF 250", "conditions": "Certified gym (Qualitop, QualiCert, SFGV); at least 3 months or 10 sessions", "source": "https://www.sympany.ch/en/individuals/worth-to-know/benefits/sports-contribution.html"}, {"insurer": "Sympany", "product": "plus / premium, natura add-on", "category": "alt_medicine", "benefit": "Recognised methods 50% (80% with natura); yearly cap CHF 3,000 (plus) or CHF 6,000 (premium), raised to CHF 6,000 / 10,000 with natura", "conditions": "Sympany-recognised provider", "source": "https://www.sympany.ch/dam/jcr:22e1c26c-b45f-4e48-a8ad-711a4837231c/Leistungsuebersicht-VVG-ambulant-2026-Sympany-1100-1225-de.pdf"}, {"insurer": "Sympany", "product": "plus / premium", "category": "glasses", "benefit": "Adults up to CHF 270 (plus) or CHF 420 (premium) per 3 years", "conditions": "", "source": "https://www.sympany.ch/dam/jcr:22e1c26c-b45f-4e48-a8ad-711a4837231c/Leistungsuebersicht-VVG-ambulant-2026-Sympany-1100-1225-de.pdf"}, {"insurer": "Sympany", "product": "plus / premium", "category": "prevention", "benefit": "Check-up up to CHF 300 (plus) or CHF 600 (premium) a year; vaccinations 80% up to CHF 220", "conditions": "", "source": "https://www.sympany.ch/dam/jcr:22e1c26c-b45f-4e48-a8ad-711a4837231c/Leistungsuebersicht-VVG-ambulant-2026-Sympany-1100-1225-de.pdf"}, {"insurer": "Sympany", "product": "plus / premium", "category": "other", "benefit": "Non-listed prescribed medicines 90% without limit; emergency treatment abroad above basic insurance; rescue up to CHF 100,000; prescribed thermal baths 50%", "conditions": "", "source": "https://www.sympany.ch/dam/jcr:22e1c26c-b45f-4e48-a8ad-711a4837231c/Leistungsuebersicht-VVG-ambulant-2026-Sympany-1100-1225-de.pdf"}, {"insurer": "EGK", "product": "EGK-SUN", "category": "fitness", "benefit": "Gym or Pilates up to CHF 360 a year; other courses up to CHF 100. SUN-BASIC: CHF 150 a year", "conditions": "From a shared CHF 500 yearly health budget", "source": "https://www.egk.ch/en/insurance/supplementary-insurance/egk-sun"}, {"insurer": "EGK", "product": "EGK-SUN", "category": "alt_medicine", "benefit": "EGK-recognised therapists, acupuncture and natural remedies 80% with no yearly cap; other recognised therapies 80% up to CHF 2,600", "conditions": "Outpatient deductible of CHF 300, 600 or 1,000", "source": "https://www.egk.ch/en/insurance/supplementary-insurance/egk-sun"}, {"insurer": "EGK", "product": "EGK-SUN", "category": "glasses", "benefit": "Adults up to CHF 200 every 3 years, laser surgery included", "conditions": "", "source": "https://www.egk.ch/en/insurance/supplementary-insurance/egk-sun"}, {"insurer": "EGK", "product": "EGK-SUN", "category": "prevention", "benefit": "Doctor check-up CHF 200 a year; nutrition advice CHF 200; vaccinations up to CHF 200 and lab tests up to CHF 500 inside the health budget", "conditions": "", "source": "https://www.egk.ch/en/insurance/supplementary-insurance/egk-sun"}, {"insurer": "EGK", "product": "EGK-SUN", "category": "other", "benefit": "Emergency transport in Switzerland and abroad up to CHF 100,000; non-listed medicines 80% up to CHF 2,000; 10% family discount", "conditions": "", "source": "https://www.egk.ch/en/insurance/supplementary-insurance/egk-sun"}];
+/* ===== pure logic: data, costs, plan finder, fit, advice ===== */
+const DEDS=[300,500,1000,1500,2000,2500];
+const CAP=700;
+const LEVY=5.15; /* monthly CO2/VOC levy refund credited on 2026 health insurance bills (CHF 61.80 a year) */
+const MODEL={
+  BASE:{label:'Standard',rule:'See any doctor directly.'},
+  PRAXIS:{label:'Family doctor / HMO',rule:'Always go to your chosen GP or HMO practice first. They refer you on.'},
+  TEL_DIG:{label:'Telmed / app',rule:'Call the medical hotline or use the app before every visit.'},
+  FLEX:{label:'Mixed',rule:'Pick a first contact each time (GP, hotline, app or pharmacy). Rules vary by insurer.'}
+};
+/* data is loaded per canton: tariffs (all of Switzerland) once, rows for the chosen canton */
+let INSURERS={};
+let tariffs=[],tariffById={},rows=[];
+function setTariffs(list){tariffs=list.map(t=>({id:t[0],ins:t[1],code:t[2],type:t[3],name:t[4]}));tariffById=Object.fromEntries(tariffs.map(t=>[t.id,t]))}
+function setRows(txt){rows=txt.trim().split('\n').filter(Boolean).map(l=>{const f=l.split(',');
+  const p=f[4].split(' ').map(x=>x==='-'?null:(+x)/100);
+  let d=null;const s=f.slice(5).join(',');
+  if(s){ if(s[0]==='d'){const v=+s.slice(1)/100;d=DEDS.map(()=>v)} else d=s.split(' ').map(x=>x==='-'?null:(+x)/100)}
+  return {t:+f[0],age:f[1],reg:+f[2],acc:f[3]==='M',p,d}});
+  const inCanton=new Set(rows.map(r=>r.t));cantonTariffs=tariffs.filter(t=>inCanton.has(t.id));
+  cantonRegions=[...new Set(rows.map(r=>r.reg))].sort();
+  rowIndex=new Map(rows.map(r=>[r.t+'|'+r.age+'|'+r.reg+'|'+r.acc,r]))}
+let rowIndex=new Map();
+let cantonTariffs=[],cantonRegions=[];
+const insName=id=>INSURERS[id]||('Insurer '+id);
+const planName=t=>t.type==='BASE'?'Standard model':t.name;
+
+function cost(prem,ded,spend){return prem*12+Math.min(spend,ded)+Math.min(0.1*Math.max(spend-ded,0),CAP)}
+function worst(prem,ded){return prem*12+ded+CAP}
+function rowFor(S,tid){return rowIndex.get(tid+'|'+S.age+'|'+S.reg+'|'+S.acc)}
+function opt(S,r,i){const p=r.p[i];if(p==null)return null;const d=r.d?r.d[i]:null;
+  return {t:r.t,tar:tariffById[r.t],ded:DEDS[i],prem:p,delta:d,prev:d==null?null:p-d,cost:cost(p,DEDS[i],S.spend),worst:worst(p,DEDS[i])}}
+function bestOpt(S,r){let b=null;r.p.forEach((_,i)=>{const o=opt(S,r,i);if(!o)return;if(!b||o.cost<b.cost-0.005||(Math.abs(o.cost-b.cost)<0.005&&o.worst<b.worst))b=o});return b}
+function optAt(S,r,ded){return opt(S,r,DEDS.indexOf(+ded))}
+function current(S){const r=rowFor(S,+S.bt);return r?optAt(S,r,S.bded):null}
+
+/* Find my plan: which tariffs at this insurer match what you pay */
+function findPlan(ins,ded,paid,year,regHint){
+  const i=DEDS.indexOf(+ded);if(i<0||!(paid>0))return [];
+  const out=[];
+  rows.forEach(r=>{const t=tariffById[r.t];if(t.ins!==ins)return;
+    const p27=r.p[i];if(p27==null)return;
+    const listed=year===2027?p27:(r.d&&r.d[i]!=null?p27-r.d[i]:null);if(listed==null)return;
+    const diff=listed-paid; // positive = you pay less than list
+    if(diff>=-0.1&&diff<=7.5)out.push({t:r.t,tar:t,age:r.age,reg:r.reg,acc:r.acc,listed,diff})});
+  out.sort((a,b)=>{const ea=Math.abs(a.diff)<=0.1?0:1,eb=Math.abs(b.diff)<=0.1?0:1;
+    if(ea!==eb)return ea-eb;
+    const ha=regHint&&a.reg===regHint?0:1,hb=regHint&&b.reg===regHint?0:1;if(ha!==hb)return ha-hb;
+    const sc=x=>Math.min(Math.abs(x.diff),Math.abs(x.diff-LEVY));return sc(a)-sc(b)});
+  return out;
+}
+
+/* Fit: does this model suit how you see doctors? */
+function fit(S,type){
+  if(type==='TEL_DIG'&&S.phoneOK==='no')return {level:'poor',note:"You'd have to call or use the app before every visit."};
+  if(type==='PRAXIS'){const n=[];if(S.hasGP==='no')n.push('You would first need to choose a GP or HMO practice in their network.');
+    if(S.specialists==='yes')n.push('Every specialist visit needs a referral from that GP.');
+    if(n.length)return {level:'caution',note:n.join(' ')}}
+  if(type==='TEL_DIG'&&S.specialists==='yes')return {level:'caution',note:'Every visit, including specialists, starts with a call or the app.'};
+  if(type==='FLEX'&&S.specialists==='yes')return {level:'caution',note:'Specialist visits need the agreed first step. Check the terms.'};
+  return {level:'ok',note:''};
+}
+
+/* Availability: a few models are only offered in listed municipalities (BFS numbers) */
+let RESTRICT={};
+function avail(S,tid){const list=(RESTRICT[S.kt]||{})[tid+'|'+S.reg];if(!list)return 'yes';const b=S.bfs||[];if(!b.length)return 'unknown';return b.some(x=>list.includes(x))?'yes':'no'}
+/* All plans for the current profile */
+function allPlans(S,filterIns){
+  const out=[];
+  cantonTariffs.forEach(t=>{const r=rowFor(S,t.id);if(!r)return;if(filterIns&&t.ins!==filterIns)return;
+    const av=avail(S,t.id);if(av==='no')return;const o=S.dedmode==='best'?bestOpt(S,r):optAt(S,r,S.dedmode);if(o)out.push({...o,fit:fit(S,t.type),avail:av})});
+  out.sort((a,b)=>a.cost-b.cost||a.worst-b.worst);return out;
+}
+
+/* Advice: the four checks */
+function advise(S){
+  const cur=current(S);if(!cur)return null;
+  const myIns=tariffById[+S.bt].ins;
+  const sp={...S,dedmode:'best'};
+  // A: deductible on your current model
+  const bestHere=bestOpt(S,rowFor(S,+S.bt));
+  const A={from:cur,to:bestHere,saving:cur.cost-bestHere.cost};
+  A.act=A.saving>=20&&bestHere.ded!==cur.ded;
+  A.lower=bestHere.ded<cur.ded;
+  // B: other models at your insurer
+  const mine=allPlans(sp,myIns).filter(o=>o.fit.level!=='poor'&&o.avail==='yes');
+  const bestMine=mine[0]&&mine[0].cost<bestHere.cost-0.005?mine[0]:bestHere;
+  const B={to:bestMine,saving:bestHere.cost-bestMine.cost,fit:fit(S,bestMine.tar.type)};
+  B.act=B.saving>=20&&bestMine.t!==+S.bt;
+  const stayBest=B.act?bestMine:bestHere;
+  // C: other insurers
+  const others=allPlans(sp).filter(o=>o.tar.ins!==myIns&&o.fit.level!=='poor'&&o.avail==='yes');
+  const bestOther=others[0]||null;
+  const C={to:bestOther,saving:bestOther?stayBest.cost-bestOther.cost:0,fit:bestOther?fit(S,bestOther.tar.type):null};
+  C.level=!bestOther||C.saving<100?'stay':C.saving<300?'optional':'worth';
+  C.cheaperAll=allPlans(sp).filter(o=>o.fit.level!=='poor');
+  // D: summary
+  const target=C.level==='worth'?bestOther:stayBest;
+  const total=cur.cost-target.cost;
+  return {cur,A,B,C,target,total,myIns};
+}
+
+/* ===== UI ===== */
+const DEADLINE=new Date('2026-11-30T23:59:59+01:00');
+const CATS={fitness:'Fitness & sport',massage:'Massage & body therapy',alt_medicine:'Complementary medicine',glasses:'Glasses & lenses',prevention:'Prevention & check-ups',other:'Other'};
+let plz=[];
+const NICE_NAMES={"8": "CSS", "32": "Aquilana", "134": "Einsiedler Krankenkasse", "194": "Sumiswalder", "246": "KK Steffisburg", "290": "Concordia", "312": "Atupri", "343": "Avenir (Groupe Mutuel)", "360": "Luzerner Hinterland", "376": "KPT", "455": "ÖKK", "509": "Sympany (Vivao)", "881": "EGK", "923": "SLKK", "966": "vita surselva", "1318": "KK Wädenswil", "1384": "SWICA", "1386": "Galenos", "1401": "rhenusana", "1479": "Mutuel (Groupe Mutuel)", "1509": "Sanitas", "1535": "Philos (Groupe Mutuel)", "1542": "Assura", "1555": "Visana", "1560": "Agrisano", "1562": "Helsana", "1568": "sana24"};
+const CANTONS={AG:'Aargau',AI:'Appenzell Innerrhoden',AR:'Appenzell Ausserrhoden',BE:'Bern',BL:'Basel-Landschaft',BS:'Basel-Stadt',FR:'Fribourg',GE:'Geneva',GL:'Glarus',GR:'Graubünden',JU:'Jura',LU:'Lucerne',NE:'Neuchâtel',NW:'Nidwalden',OW:'Obwalden',SG:'St. Gallen',SH:'Schaffhausen',SO:'Solothurn',SZ:'Schwyz',TG:'Thurgau',TI:'Ticino',UR:'Uri',VD:'Vaud',VS:'Valais',ZG:'Zug',ZH:'Zurich'};
+const PERK_NAMES=['Helsana','CSS','SWICA','Sanitas','Visana','Concordia','KPT','Atupri','Assura','ÖKK','Sympany','EGK'];
+function perkGroup(id){const n=insName(id);if(/Groupe Mutuel/.test(n))return 'Groupe Mutuel';if(/^sana24/i.test(n))return 'Visana';return PERK_NAMES.find(p=>n.toLowerCase().startsWith(p.toLowerCase()))||null}
+const $=id=>document.getElementById(id);
+const fmt=(v,dp=2)=>v.toLocaleString('de-CH',{minimumFractionDigits:dp,maximumFractionDigits:dp});
+const chf=(v,dp=0)=>v==null?'–':'CHF '+fmt(v,dp);
+const dedTxt=d=>'CHF '+d.toLocaleString('de-CH');
+
+const S={kt:'ZH',place:'',bins:'8',bded:300,paid:'597.60',pyear:2027,plz:'',bt:null,pick:null,touched:false,
+  spend:1500,hasGP:'yes',phoneOK:'yes',specialists:'no',age:'E',reg:1,work:'yes',acc:false,
+  dedmode:'best',insf:'',models:{BASE:1,PRAXIS:1,TEL_DIG:1,FLEX:1},pins:[],showAll:false,chartPlan:'cur',perkins:'',
+  lang:'de',lname:'',lnum:'',laddr:'',steps:{},fold:{}};
+try{const saved=JSON.parse(localStorage.getItem('kk27ch-1')||'null');if(saved)Object.assign(S,saved)}catch(e){}
+function tkey(id){const t=tariffById[id];return t?t.ins+'|'+t.code:null}
+function fromKey(k){const t=k&&tariffs.find(x=>x.ins+'|'+x.code===k);return t?t.id:null}
+function save(){try{if(tariffs.length){S.btKey=tkey(+S.bt);S.pinKeys=S.pins.map(tkey).filter(Boolean)}localStorage.setItem('kk27ch-1',JSON.stringify(S))}catch(e){}}
+
+function plzHits(){return S.plz.length===4?plz.filter(x=>x[0]===S.plz):[]}
+function regHint(){const h=plzHits().filter(x=>x[2]===S.kt);const regs=[...new Set(h.flatMap(x=>x[3]))];return regs.length===1?regs[0]:null}
+function matches(){return findPlan(S.bins,S.bded,+S.paid,+S.pyear,regHint())}
+function applyMatch(m){S.bt=m.t;S.reg=m.reg;S.age=m.age;S.acc=m.acc;if(!m.acc)S.work='yes';S.pick=m.t+'|'+m.reg+'|'+m.age+'|'+m.acc}
+function runFinder(){const ms=matches();if(ms.length)applyMatch(ms[0]);else{const own=cantonTariffs.filter(t=>t.ins===S.bins);if(!own.length)return;if(!own.some(t=>t.id===S.bt))S.bt=(own.find(t=>t.type!=='BASE')||own[0]).id;S.pick=null}}
+
+function seg(id,key,num,after){$(id).querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',String(String(S[key])===b.dataset.v));
+  b.onclick=()=>{S[key]=num?+b.dataset.v:b.dataset.v;if(after)after(b.dataset.v);save();render()}})}
+const pinIcon='<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M10.5 1.5l4 4-1.4 1.4-.9-.4-2.7 2.7.3 3.2-1.4 1.4L6 11.4l-3.6 3.6-.9-.9L5.1 10.5 2.7 8.1l1.4-1.4 3.2.3L10 4.3l-.4-.9z"/></svg>';
+function deltaHtml(o){if(o.delta==null)return '<span class="delta flat">new</span>';
+  const pct=o.prev>0?o.delta/o.prev*100:0;const cls=o.delta>0.004?'up':o.delta<-0.004?'down':'flat';
+  return `<span class="delta ${cls} num">${o.delta>0?'+':''}${fmt(o.delta)}</span> <span class="cell-sub">${pct>0?'+':''}${fmt(pct,1)}%</span>`}
+const accTxt=a=>a?'with accident cover':'without accident cover';
+const regTxt=r=>(cantonRegions.length<=1?'canton '+S.kt:(S.kt==='ZH'&&r===1?'region 1 (City of Zurich)':S.kt+' region '+r));
+
+function render(){
+  S.bfs=[...new Set(plzHits().filter(x=>x[2]===S.kt).flatMap(x=>x[4]||[]))];
+  const days=Math.max(0,Math.ceil((DEADLINE-new Date())/86400000));
+  $('deadline').innerHTML=`<div class="days">${days}</div><div class="lbl"><strong>days left to switch</strong><br><span class="muted">Your insurer must receive changes by 30 Nov 2026</span></div>`;
+
+  /* step 1 */
+  const insIds=[...new Set(cantonTariffs.map(t=>t.ins))].sort((a,b)=>insName(a).localeCompare(insName(b)));
+  $('bins').innerHTML=insIds.map(i=>`<option value="${i}" ${i===S.bins?'selected':''}>${insName(i)}</option>`).join('');
+  $('bded').innerHTML=DEDS.map(d=>`<option value="${d}" ${d==S.bded?'selected':''}>${dedTxt(d)}</option>`).join('');
+  if(document.activeElement!==$('paid'))$('paid').value=S.paid;
+  if(document.activeElement!==$('plz'))$('plz').value=S.plz;
+  seg('pyear','pyear',true,()=>{S.touched=true;runFinder()});
+  const ms=matches();
+  let fh='';
+  if(S.paid===''||!(+S.paid>0))fh='<div class="note info">Type what you pay a month for basic insurance and the page finds your exact plan.</div>';
+  else if(!ms.length)fh=`<div class="note warn">No ${insName(S.bins)} plan in ${CANTONS[S.kt]} costs ${chf(+S.paid,2)} at a ${dedTxt(+S.bded)} deductible${+S.pyear===2026?' in 2026':' in 2027'}. Check the deductible and that you entered basic insurance only, or set your plan by hand below.</div>`;
+  else{
+    const list=ms.slice(0,4);
+    fh=`<div class="field"><span class="flabel">${list.length>1?'Which of these is yours?':'Your plan'}</span><div class="choices" id="matchlist">${list.map((m,i)=>{const key=m.t+'|'+m.reg+'|'+m.age+'|'+m.acc;
+      const levy=Math.abs(m.diff-LEVY)<0.6&&+S.pyear===2026;
+      const why=Math.abs(m.diff)<=0.1?'exact match':levy?`listed ${chf(m.listed,2)}; you pay ${chf(m.diff,2)} less because of the CO2 levy refund`:`listed ${chf(m.listed,2)}`;
+      return `<button type="button" data-i="${i}" aria-pressed="${S.pick===key}">${planName(m.tar)}<span>${regTxt(m.reg)} · ${m.age==='E'?'26+':'19 to 25'} · ${accTxt(m.acc)} · ${why}</span></button>`}).join('')}</div></div>`;
+    if(list.length>1)fh+='<div class="hint">Plans can share a price. Pick the model name your insurer shows.</div>';
+  }
+  $('finder').innerHTML=fh;
+  if($('matchlist'))$('matchlist').querySelectorAll('button').forEach(b=>b.onclick=()=>{applyMatch(ms.slice(0,4)[+b.dataset.i]);S.touched=true;S.fold[1]=true;save();render()});
+  const own=cantonTariffs.filter(t=>t.ins===S.bins&&rowFor(S,t.id));
+  $('bmodel').innerHTML=own.map(t=>`<option value="${t.id}" ${t.id==S.bt?'selected':''}>${planName(t)}</option>`).join('');
+
+  /* step 2 */
+  $('preset').querySelectorAll('button').forEach(b=>{b.setAttribute('aria-pressed',String(+b.dataset.v===S.spend));b.onclick=()=>{S.spend=+b.dataset.v;save();render()}});
+  $('spend').value=S.spend;$('spendval').textContent=chf(S.spend)+' a year';
+  /* step 3 */
+  seg('hasGP','hasGP');seg('phoneOK','phoneOK');seg('specialists','specialists');
+  /* step 4 */
+  seg('age','age');
+  $('region').innerHTML=cantonRegions.map(r=>`<button type="button" data-v="${r}">${S.kt==='ZH'&&r===1?'1 · City of Zurich':r}</button>`).join('');seg('region','reg',true);
+  $('kt').innerHTML=Object.entries(CANTONS).sort((a,b)=>a[1].localeCompare(b[1])).map(([k,n])=>`<option value="${k}" ${k===S.kt?'selected':''}>${n}</option>`).join('');
+  seg('work','work',false,v=>{S.acc=(v==='no')});
+  $('acc').checked=S.acc;
+  const hit=plzHits().filter(x=>x[2]===S.kt);
+  $('regwrap').hidden=cantonRegions.length<=1;
+  if(S.plz.length===4&&!plzHits().length)$('reghint').textContent='That postcode is not in the FOPH list.';
+  else if(hit.length){const regs=[...new Set(hit.flatMap(h=>h[3]))].sort();const pl=[...new Set(hit.map(h=>h[1]))].join(', ');
+    $('reghint').textContent=regs.length>1?`${pl} spans regions ${regs.join(' and ')}; your municipality decides.`:`${pl} is in region ${regs[0]}.`}
+  else $('reghint').textContent='Set automatically from your postcode or when the page finds your plan.';
+  $('acchint').innerHTML=S.work==='yes'
+    ?(S.acc?'Your employer already insures you for accidents, so you could leave this out and save.':'Left out: your employer insures you for accidents. If your job ends, that stops 31 days after your last salary, and you then need to add it here.')
+    :(S.acc?'Included: without an employer, your health insurance has to cover accidents.':'<span style="color:var(--bad)">Without an employer you need accident cover here.</span>');
+
+  $('contact').textContent=CONTACT||'[contact email to be added]';
+  renderFolds();
+  renderVerdict();
+  renderPlans();
+  renderCompare();
+  renderChart();
+  renderPerks();
+  renderSwitch();
+}
+
+const PRESET_LBL={300:'Only check-ups',1500:'A few visits',4000:'Regular treatment',8500:'I always hit the CHF 700 cap'};
+function renderFolds(){
+  const t=tariffById[+S.bt];
+  const sums={
+    1:t?`${insName(t.ins)} · ${planName(t)} · ${dedTxt(+S.bded)} deductible${+S.paid>0?' · '+chf(+S.paid,2)+'/mo':''}`:'Not set yet',
+    2:(PRESET_LBL[S.spend]?PRESET_LBL[S.spend]+' · ':'')+'about '+chf(S.spend)+' a year',
+    3:[S.hasGP==='yes'?'Has a GP':'No GP yet',S.phoneOK==='yes'?'phoning first is fine':'no phoning first',S.specialists==='yes'?'sees specialists often':'rarely sees specialists'].join(' · '),
+    4:`${S.age==='E'?'26 or older':'19 to 25'} · ${regTxt(S.reg)} · ${accTxt(S.acc)}`};
+  [1,2,3,4].forEach(n=>{const f=!!S.fold[n];$('b'+n).hidden=f;$('sum'+n).hidden=!f;$('sum'+n).textContent=sums[n];
+    const b=$('t'+n);b.textContent=f?'Edit':'Done';b.setAttribute('aria-expanded',String(!f));
+    b.onclick=()=>{S.fold[n]=!f;save();render();if(f)$('b'+n).querySelector('button,select,input')?.focus()}});
+}
+const TABS=['answer','compare','perks','switch','about'];
+const CONTACT='hello@celestinetan.com'; /* add a contact email before sharing publicly */
+function showTab(name){if(!TABS.includes(name))name='answer';
+  document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==name);
+  document.querySelectorAll('#tabs a').forEach(a=>{if(a.dataset.tab===name)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+  const tb=$('tabs');if(tb.getBoundingClientRect().top<0)tb.scrollIntoView({block:'start'})}
+function goTab(name){if(location.hash==='#'+name)showTab(name);else location.hash=name}
+
+function renderVerdict(){
+  const a=advise(S);const v=$('verdict');
+  if(!a){v.innerHTML='<h2 id="h-verdict">What the numbers suggest</h2><div class="empty">Tell the page your plan in step 1 to get an answer.</div>';return}
+  const my=insName(a.myIns);
+  const acts=[];let head='';
+  const curName=planName(a.cur.tar);
+  if(a.C.level==='worth'){const t=a.C.to;head=`Moving your basic insurance to ${insName(t.tar.ins)} could save the most.`;
+    acts.push(`Option: move basic insurance to <strong>${insName(t.tar.ins)} · ${planName(t.tar)}</strong> with a ${dedTxt(t.ded)} deductible.`);
+    acts.push(`If you do, keep your extras with ${my} until ${insName(t.tar.ins)} has accepted you.`)}
+  else if(a.B.act){const t=a.B.to;head=`Changing to ${planName(t.tar)} at ${my}${t.ded!==a.cur.ded?` with a ${dedTxt(t.ded)} deductible`:''} could save the most.`;
+    acts.push(`Option: ask ${my} to change your model to <strong>${planName(t.tar)}</strong>${t.ded!==a.cur.ded?` and your deductible to <strong>${dedTxt(t.ded)}</strong>`:''}.`)}
+  else if(a.A.act){head=`Your plan looks right. ${a.A.lower?'A lower':'A higher'} deductible of ${dedTxt(a.A.to.ded)} could save you money.`;
+    acts.push(`Option: ask ${my} to change your deductible from ${dedTxt(a.cur.ded)} to <strong>${dedTxt(a.A.to.ded)}</strong>.`)}
+  else head=`Your current plan already looks like the cheapest choice that suits you.`;
+  if(a.C.level==='optional')acts.push(`Also possible: ${insName(a.C.to.tar.ins)} ${planName(a.C.to.tar)} could save another ${chf(a.C.saving)} a year (see below).`);
+  const changesLater=a.C.level==='worth'||a.B.act||(a.A.act&&a.A.lower);
+  const when=a.C.level==='worth'?'The cancellation must reach '+my+' by 30 November 2026.'
+    :changesLater?`${my} must receive your request by 30 November 2026.`
+    :a.A.act?`Raising a deductible is usually possible until 31 December; confirm the date with ${my}.`:'';
+  const acc=S.work==='no'&&!S.acc?'<div class="note bad">You said you don\'t work 8+ hours a week for one employer, but accident cover is left out. Add it, or you are not insured for accidents.</div>':'';
+  const example=!S.touched?'<div class="note info">Showing an example. Enter your own plan in step 1 for your answer.</div>':'';
+
+  // card 1
+  const A=a.A;
+  const c1=A.act
+    ?`<div class="chk"><div class="top"><h3>Your deductible</h3><span class="pill do">Could save</span></div><div class="fig">${dedTxt(a.cur.ded)} → ${dedTxt(A.to.ded)}</div>
+      <p>Could save <strong>${chf(A.saving)}</strong> a year: ${chf(A.to.cost)} instead of ${chf(a.cur.cost)}.</p>
+      <p class="muted small">${A.lower?'With bills this high you pay the whole deductible anyway, so the cheaper premium of a high deductible doesn\'t make up for it.':'With bills this low you rarely use the deductible, so a higher one mostly just lowers your premium.'} In a bad year the most you could pay is ${chf(A.to.worst)}.</p></div>`
+    :`<div class="chk"><div class="top"><h3>Your deductible</h3><span class="pill ok">Looks right</span></div><div class="fig">${dedTxt(a.cur.ded)}</div><p>Looks like the cheapest deductible for your bills on this plan.</p></div>`;
+  // card 2
+  const B=a.B;let c2;
+  const anyCheaperMine=allPlans({...S,dedmode:'best'},a.myIns).find(o=>o.cost<(B.act?B.to.cost:A.to.cost)-20&&o.fit.level==='poor');
+  if(B.act)c2=`<div class="chk"><div class="top"><h3>Other models at ${my}</h3><span class="pill do">Could save</span></div><div class="fig">${planName(B.to.tar)}</div>
+      <p>Could save <strong>${chf(B.saving)}</strong> a year more than changing the deductible alone.</p><p class="muted small">${MODEL[B.to.tar.type].rule}${B.fit.note?' '+B.fit.note:''}</p></div>`;
+  else c2=`<div class="chk"><div class="top"><h3>Other models at ${my}</h3><span class="pill ok">Looks right</span></div><div class="fig">${curName}</div>
+      <p>Your model looks like the cheapest one at ${my} that suits you.</p>${anyCheaperMine?`<p class="muted small">${planName(anyCheaperMine.tar)} is cheaper, but ${anyCheaperMine.fit.note.charAt(0).toLowerCase()+anyCheaperMine.fit.note.slice(1)}</p>`:''}</div>`;
+  // card 3
+  const C=a.C;let c3='';
+  if(!C.to)c3=`<div class="chk"><div class="top"><h3>Other insurers</h3><span class="pill ok">No saving</span></div><p>No cheaper plan elsewhere that suits you.</p></div>`;
+  else{const t=C.to;const pill=C.level==='worth'?'<span class="pill do">Bigger saving</span>':C.level==='optional'?'<span class="pill opt">Small saving</span>':'<span class="pill ok">Tiny saving</span>';
+    const body=C.saving<=0?`<p>Nothing elsewhere beats your best option at ${my}.</p>`
+      :C.level==='stay'?`<p>The best plan elsewhere could save only <strong>${chf(C.saving)}</strong> a year. That's small for the effort of switching insurer.</p>`
+      :C.level==='optional'?`<p>Could save <strong>${chf(C.saving)}</strong> a year. A small amount, so it mainly makes sense if its rules suit you.</p>`
+      :`<p>Could save <strong>${chf(C.saving)}</strong> a year compared with your best option at ${my}.</p>`;
+    const supp=C.level!=='stay'&&C.saving>0?`<div class="note warn small">Keep your extras with ${my} until the new insurer has accepted you. New extras can be refused because of your health, and basic and extras can stay with different insurers. <a href="#perks" class="toperks">See what ${my}'s extras pay</a></div>`:'';
+    c3=`<div class="chk"><div class="top"><h3>Other insurers</h3>${pill}</div><div class="fig">${insName(t.tar.ins)} · ${planName(t.tar)}</div>${body}
+      <p class="muted small">${MODEL[t.tar.type].label}: ${MODEL[t.tar.type].rule}${C.fit&&C.fit.note?' '+C.fit.note:''} Deductible ${dedTxt(t.ded)}.</p>${supp}</div>`}
+
+  v.innerHTML=`${example}<div class="vhead"><div><div class="eyebrow" id="h-verdict">What the numbers suggest</div><p class="say">${head}</p></div>
+    <div class="vsave">${a.total>=1?`<div class="v">${chf(a.total)}</div><div class="s">possible saving a year</div>`:`<div class="v" style="color:var(--ink)">${chf(a.cur.cost)}</div><div class="s">your yearly cost</div>`}</div></div>
+    ${acts.length?`<ol class="actions">${acts.map(x=>`<li>${x}</li>`).join('')}</ol>`:''}
+    ${when?`<p class="small"><strong>If you go ahead:</strong> ${when}</p>`:''}${acc}
+    <div class="checks">${c1}${c2}${c3}</div>
+    <div class="links">${C.level!=='stay'&&C.saving>0?'<a href="#switch" class="primary">Start switching</a>':''}<a href="#compare">See all plans</a><a href="#perks" class="toperks">What do extras pay?</a></div>
+    <p class="hint">Based on ${my} ${curName} at ${dedTxt(a.cur.ded)}, ${chf(S.spend)} of bills a year, ${S.age==='E'?'age 26+':'age 19 to 25'}, ${regTxt(S.reg)}, ${accTxt(S.acc)}. Your yearly cost now: ${chf(a.cur.cost)}.</p>`;
+  v.querySelectorAll('.toperks').forEach(l=>l.onclick=()=>{const g=perkGroup(a.myIns);if(g)S.perkins=g;save();renderPerks()});
+}
+
+function renderPlans(){
+  $('insf').innerHTML='<option value="">All insurers</option>'+[...new Set(cantonTariffs.map(t=>t.ins))].sort((a,b)=>insName(a).localeCompare(insName(b))).map(i=>`<option value="${i}" ${i===S.insf?'selected':''}>${insName(i)}</option>`).join('');
+  $('dedmode').innerHTML='<option value="best">Best for your bills</option>'+DEDS.map(d=>`<option value="${d}">${dedTxt(d)}</option>`).join('');
+  $('dedmode').value=String(S.dedmode);
+  $('models').innerHTML=Object.entries(MODEL).map(([k,m])=>`<button type="button" class="chipbtn" data-k="${k}" aria-pressed="${!!S.models[k]}">${m.label}</button>`).join('');
+  $('models').querySelectorAll('button').forEach(x=>x.onclick=()=>{S.models[x.dataset.k]=S.models[x.dataset.k]?0:1;save();render()});
+  const all=allPlans(S,S.insf).filter(o=>S.models[o.tar.type]);
+  const cur=current(S);
+  $('plansub').textContent=`${all.length} plans · ${S.age==='E'?'age 26+':'age 19 to 25'} · ${regTxt(S.reg)} · ${accTxt(S.acc)} · ${chf(S.spend)} of bills a year. Faded plans don't suit your answers in step 3.`;
+  const limit=S.showAll?all.length:20;const shown=all.slice(0,limit);
+  const mine=all.find(o=>o.t==S.bt);if(mine&&!shown.includes(mine))shown.push(mine);
+  $('plans').innerHTML=`<div class="plan head"><div>#</div><div>Insurer · model</div><div>Deductible</div><div>Premium /mo</div><div>vs 2026 /mo</div><div>Cost / year</div><div></div></div>`+
+    shown.map(o=>{const isB=o.t==S.bt;const pinned=S.pins.includes(o.t);const diff=cur&&!isB?o.cost-cur.cost:null;
+    return `<div class="plan ${isB?'base':''} ${o.fit.level==='poor'?'poor':''}">
+      <div class="rank">${all.indexOf(o)+1}</div>
+      <div class="pname"><span class="ins">${isB?'<span class="tag you">You</span>':''}${insName(o.tar.ins)}</span><span class="mdl"><span class="tag">${MODEL[o.tar.type].label}</span>${planName(o.tar)}</span><span class="rule">${MODEL[o.tar.type].rule}</span>${o.fit.note?`<span class="fitn">${o.fit.level==='poor'?'Doesn\'t suit you: ':'Check: '}${o.fit.note}</span>`:''}${o.avail==='unknown'?'<span class="fitn">Only offered in some municipalities. Enter your postcode in step 1 to check.</span>':''}</div>
+      <div class="r c-ded"><span class="lbl-m">Deductible</span><span class="num">${o.ded.toLocaleString('de-CH')}</span></div>
+      <div class="r c-prem"><span class="lbl-m">Premium /mo</span><span class="cell-big">${fmt(o.prem)}</span></div>
+      <div class="r c-yoy"><span class="lbl-m">vs 2026 /mo</span>${deltaHtml(o)}</div>
+      <div class="r c-tco"><span class="lbl-m">Cost / year</span><span class="cell-big">${chf(o.cost)}</span>${diff!=null&&Math.abs(diff)>=1?`<span class="vsb ${diff<0?'save':'more'}" style="display:block">${diff<0?'save '+chf(-diff):'+'+chf(diff)}</span>`:''}</div>
+      <div class="pinc">${isB?'':`<button type="button" class="pin" data-t="${o.t}" aria-pressed="${pinned}" aria-label="${pinned?'Unpin':'Pin'} ${insName(o.tar.ins)} ${planName(o.tar)}" title="${pinned?'Unpin':'Pin to compare'}">${pinIcon}</button>`}</div></div>`}).join('');
+  $('plans').querySelectorAll('.pin').forEach(p=>p.onclick=()=>{const t=+p.dataset.t;if(S.pins.includes(t))S.pins=S.pins.filter(x=>x!==t);else{if(S.pins.length>=4)S.pins.shift();S.pins.push(t)}save();render()});
+  $('more').textContent=S.showAll?'Show top 20 only':`Show all ${all.length} plans`;$('more').hidden=all.length<=20;
+}
+
+function renderCompare(){
+  const cur=current(S);
+  const ids=[+S.bt,...S.pins.filter(t=>t!=S.bt)];
+  $('cmp').innerHTML=ids.map(tid=>{const t=tariffById[tid];const r=rowFor(S,tid);if(!r)return '';const isB=tid==S.bt;
+    const o=isB?cur:bestOpt(S,r);if(!o)return '';const diff=cur&&!isB?o.cost-cur.cost:null;
+    return `<div class="ccard ${isB?'base':''}"><div><div class="eyebrow">${isB?'Your plan now':MODEL[t.type].label}</div><h3>${insName(t.ins)}</h3><div class="small">${planName(t)}</div></div>
+      <dl><dt>Deductible</dt><dd>${o.ded.toLocaleString('de-CH')}</dd><dt>Premium /mo</dt><dd>${fmt(o.prem)}</dd><dt>vs 2026</dt><dd>${o.delta==null?'new':(o.delta>=0?'+':'')+fmt(o.delta)}</dd><dt>Cost /yr</dt><dd><strong>${fmt(o.cost,0)}</strong></dd><dt>Worst year</dt><dd>${fmt(o.worst,0)}</dd>${diff!=null?`<dt>vs yours</dt><dd style="color:${diff<0?'var(--good)':'var(--bad)'}">${diff<0?'−':'+'}${fmt(Math.abs(diff),0)}</dd>`:''}</dl>
+      <div class="hint">${MODEL[t.type].rule}</div></div>`}).join('')+(S.pins.length?'':'<div class="empty">Nothing pinned yet. Use the pin on any plan in the list.</div>');
+}
+
+function renderChart(){
+  const a=advise(S);
+  const opts=[{v:'cur',label:'Your plan now'}].concat(a&&a.target&&a.target.t!=S.bt?[{v:'rec',label:'The recommended plan'}]:[]).concat(S.pins.map(t=>({v:String(t),label:insName(tariffById[t].ins)+' · '+planName(tariffById[t])})));
+  if(!opts.some(o=>o.v===S.chartPlan))S.chartPlan='cur';
+  $('chartplan').innerHTML=opts.map(o=>`<option value="${o.v}" ${o.v===S.chartPlan?'selected':''}>${o.label}</option>`).join('');
+  const tid=S.chartPlan==='cur'?+S.bt:S.chartPlan==='rec'?a.target.t:+S.chartPlan;
+  const r=rowFor(S,tid);const svg=$('chart');if(!r){svg.innerHTML='';return}
+  const W=760,H=340,L=64,R=20,T=16,B=40,xmax=12000;const cols=['--c1','--c2','--c3','--c4','--c5','--c6'];
+  const ser=DEDS.map((d,i)=>r.p[i]==null?null:{d,prem:r.p[i],col:cols[i]}).filter(Boolean);
+  const step=1000;const ymin=Math.floor(Math.min(...ser.map(s=>cost(s.prem,s.d,0)))/step)*step;const ymax=Math.ceil(Math.max(...ser.map(s=>cost(s.prem,s.d,xmax)))/step)*step;
+  const x=v=>L+(W-L-R)*v/xmax,y=v=>T+(H-T-B)*(1-(v-ymin)/(ymax-ymin));
+  let g='<g class="grid">';for(let v=ymin;v<=ymax;v+=step)g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end">${(v/1000).toLocaleString('de-CH')}k</text>`;
+  for(let v=0;v<=xmax;v+=2000)g+=`<text x="${x(v)}" y="${H-B+18}" text-anchor="middle">${v/1000}k</text>`;
+  g+=`<text x="${(L+W-R)/2}" y="${H-4}" text-anchor="middle">doctor bills per year (CHF)</text></g>`;
+  let paths='';ser.forEach(s=>{const pts=[...new Set([0,s.d,s.d+7000,xmax])].filter(v=>v<=xmax).sort((a,b)=>a-b);
+    paths+=`<path d="${pts.map((v,i)=>(i?'L':'M')+x(v).toFixed(1)+' '+y(cost(s.prem,s.d,v)).toFixed(1)).join(' ')}" fill="none" stroke="var(${s.col})" stroke-width="2.2"/>`});
+  const sx=x(Math.min(S.spend,xmax));let mk=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" stroke="var(--ink)" stroke-dasharray="4 4"/>`;
+  ser.forEach(s=>{mk+=`<circle cx="${sx}" cy="${y(cost(s.prem,s.d,S.spend))}" r="4" fill="var(${s.col})" stroke="var(--surface)" stroke-width="1.5"/>`});
+  svg.innerHTML=g+paths+mk;
+  $('legend').innerHTML=ser.map(s=>`<span><i style="background:var(${s.col})"></i>${dedTxt(s.d)} · ${fmt(s.prem)}/mo</span>`).join('');
+  const rk=ser.map(s=>({...s,c:cost(s.prem,s.d,S.spend)})).sort((a,b)=>a.c-b.c);
+  const lo=ser[0],hi=ser[ser.length-1];let be=null;for(let v=0;v<=20000;v+=10){if(cost(lo.prem,lo.d,v)<=cost(hi.prem,hi.d,v)){be=v;break}}
+  $('chartnote').innerHTML=`At ${chf(S.spend)} of bills the cheapest deductible on ${planName(tariffById[tid])} is <strong>${dedTxt(rk[0].d)}</strong> (${chf(rk[0].c)} a year). `+(be!=null?`The ${dedTxt(lo.d)} deductible beats ${dedTxt(hi.d)} once your bills pass about <strong>${chf(Math.round(be/50)*50)}</strong> a year.`:'');
+}
+
+function renderPerks(){
+  const ins=[...new Set(PERKS.map(p=>p.insurer))];
+  if(!S.perkins||!ins.includes(S.perkins)){const g=perkGroup(S.bins);S.perkins=g&&ins.includes(g)?g:ins[0]}
+  $('perkins').innerHTML=ins.map(n=>`<option ${n===S.perkins?'selected':''}>${n}</option>`).join('');
+  const ps=PERKS.filter(p=>p.insurer===S.perkins);
+  const groups=Object.keys(CATS).map(c=>[c,ps.filter(p=>p.category===c)]).filter(g=>g[1].length);
+  $('perks').innerHTML=`<p class="small muted" style="margin-bottom:12px">From ${S.perkins}'s own product pages. Each product costs extra on top of basic insurance; conditions apply.</p><div class="perkgrid">${groups.map(([c,list])=>`<div class="perkcat"><h3>${CATS[c]}</h3>${list.map(p=>`<div class="perk"><span class="prod">${p.product}</span><span>${p.benefit}</span>${p.conditions?`<span class="cond">${p.conditions}</span>`:''}${p.source?`<a class="cond" href="${p.source}" target="_blank" rel="noopener">Source</a>`:''}</div>`).join('')}</div>`).join('')}</div>`;
+}
+
+function renderSwitch(){
+  const list=[['pick','Choose your plan, using the comparison as a guide'],['offer','Get a written offer from the new insurer for basic insurance'],['apply','Apply to the new insurer. They cannot refuse you for basic insurance'],['cancel','Send the cancellation to your current insurer by registered post, ideally by 15 November'],['confirm','Check both insurers confirm: old cover ends 31 December, new cover starts 1 January 2027']];
+  $('steps').innerHTML=list.map(([k,t])=>`<li><input type="checkbox" id="st-${k}" ${S.steps[k]?'checked':''}><label for="st-${k}">${t}</label></li>`).join('');
+  list.forEach(([k])=>$('st-'+k).onchange=e=>{S.steps[k]=e.target.checked;save()});
+  ['lname','lnum','laddr'].forEach(k=>{if(document.activeElement!==$(k))$(k).value=S[k]});
+  seg('lang','lang');$('letter').textContent=letterText();
+}
+function letterText(){
+  const name=S.lname||'[Your name]',addr=S.laddr||'[Street, postcode, town]',num=S.lnum||'[policy number]';
+  const ins=S.bins==='1562'?'Helsana Versicherungen AG\nPostfach\n8081 Zürich':insName(S.bins)+'\n[Address from your policy]';
+  const today=new Date().toLocaleDateString(S.lang==='de'?'de-CH':'en-GB',{day:'numeric',month:'long',year:'numeric'});
+  if(S.lang==='de')return `${name}\n${addr}\n\n${ins}\n\n${S.place||'[Ort]'}, ${today}\n\nEINSCHREIBEN\n\nKündigung der obligatorischen Krankenpflegeversicherung (Grundversicherung KVG)\nVersichertennummer: ${num}\n\nSehr geehrte Damen und Herren\n\nHiermit kündige ich meine obligatorische Krankenpflegeversicherung nach KVG fristgerecht per 31. Dezember 2026.\n\nAllfällige Zusatzversicherungen nach VVG sind von dieser Kündigung nicht betroffen und sollen unverändert weiterlaufen.\n\nMein neuer Versicherer wird Ihnen die lückenlose Weiterversicherung ab 1. Januar 2027 bestätigen.\n\nBitte bestätigen Sie mir den Erhalt dieser Kündigung schriftlich.\n\nFreundliche Grüsse\n\n${name}`;
+  return `${name}\n${addr}\n\n${ins.replace('Postfach','PO Box').replace('Zürich','Zurich')}\n\n${S.place||'[Place]'}, ${today}\n\nREGISTERED MAIL\n\nCancellation of compulsory health insurance (basic insurance under the KVG)\nPolicy number: ${num}\n\nDear Sir or Madam\n\nI hereby cancel my compulsory health insurance under the KVG with effect from 31 December 2026, within the notice period.\n\nAny supplementary insurance under the VVG is not affected by this cancellation and should continue unchanged.\n\nMy new insurer will confirm to you that I am covered without interruption from 1 January 2027.\n\nPlease confirm receipt of this cancellation in writing.\n\nKind regards\n\n${name}\n\n(Send the German version. This translation is for your reference.)`;
+}
+
+/* inputs */
+$('bins').addEventListener('change',e=>{S.bins=e.target.value;S.touched=true;runFinder();save();render()});
+$('bded').addEventListener('change',e=>{S.bded=+e.target.value;S.touched=true;runFinder();save();render()});
+$('paid').addEventListener('input',e=>{S.paid=e.target.value;S.touched=true;runFinder();save();render()});
+$('plz').addEventListener('input',async e=>{S.plz=e.target.value.replace(/\D/g,'').slice(0,4);e.target.value=S.plz;
+  const h=plzHits();const kts=[...new Set(h.map(x=>x[2]))];if(h.length)S.place=h[0][1];
+  if(kts.length===1&&kts[0]!==S.kt){await loadCanton(kts[0]);}
+  const rh=regHint();if(rh!=null){S.reg=rh;}runFinder();save();render()});
+$('kt').addEventListener('change',async e=>{await loadCanton(e.target.value);S.touched=true;runFinder();save();render()});
+$('bmodel').addEventListener('change',e=>{S.bt=+e.target.value;S.pick=null;S.touched=true;save();render()});
+$('spend').addEventListener('input',e=>{S.spend=+e.target.value;save();render()});
+$('acc').addEventListener('change',e=>{S.acc=e.target.checked;save();render()});
+$('dedmode').addEventListener('change',e=>{S.dedmode=e.target.value;save();render()});
+$('insf').addEventListener('change',e=>{S.insf=e.target.value;save();render()});
+$('more').addEventListener('click',()=>{S.showAll=!S.showAll;save();render()});
+$('chartplan').addEventListener('change',e=>{S.chartPlan=e.target.value;save();render()});
+$('perkins').addEventListener('change',e=>{S.perkins=e.target.value;save();renderPerks()});
+['lname','lnum','laddr'].forEach(k=>$(k).addEventListener('input',e=>{S[k]=e.target.value;save();$('letter').textContent=letterText()}));
+$('copy').addEventListener('click',()=>{const txt=letterText();const done=()=>{$('copied').textContent='Copied'};
+  function sel(){const r=document.createRange();r.selectNodeContents($('letter'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('copied').textContent='Selected. Press Ctrl+C or Cmd+C to copy.'}
+  try{navigator.clipboard.writeText(txt).then(done).catch(sel)}catch(e){sel()}});
+window.addEventListener('hashchange',()=>showTab(location.hash.slice(1)));
+const cache={};
+async function loadCanton(kt){if(!cache[kt]){const r=await fetch('data/cantons/'+kt+'.txt');if(!r.ok)throw new Error('canton '+kt);cache[kt]=await r.text()}
+  S.kt=kt;setRows(cache[kt]);if(!cantonRegions.includes(S.reg))S.reg=cantonRegions[0];
+  if(!cantonTariffs.some(t=>t.ins===S.bins)){const ids=[...new Set(cantonTariffs.map(t=>t.ins))];S.bins=ids.includes('1562')?'1562':ids[0]}}
+async function boot(){
+  showTab(location.hash.slice(1));
+  try{
+    const [tj,ij,pj]=await Promise.all(['data/tariffs.json','data/insurers.json','data/plz.json'].map(f=>fetch(f).then(r=>{if(!r.ok)throw new Error(f);return r.json()})));
+    setTariffs(tj);INSURERS=Object.assign(ij,NICE_NAMES);plz=pj;
+    if(S.btKey)S.bt=fromKey(S.btKey);if(S.pinKeys)S.pins=S.pinKeys.map(fromKey).filter(x=>x!=null);
+    try{RESTRICT=await fetch('data/restricted.json').then(r=>r.ok?r.json():{})}catch(e){RESTRICT={}}
+    fetch('data/meta.json').then(r=>r.json()).then(m=>{$('databuilt').textContent='Data files built '+m.built+'.'}).catch(()=>{});
+    await loadCanton(S.kt||'ZH');
+    if(S.bt==null||!tariffById[S.bt]||!rowFor(S,+S.bt))runFinder();
+    render();
+  }catch(err){$('verdict').innerHTML='<div class="note bad">The premium data could not be loaded. Check your connection and reload the page.</div>';console.error(err)}
+}
+boot();
+
+</script>
