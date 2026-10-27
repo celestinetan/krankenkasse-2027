@@ -13,7 +13,7 @@ Output (data/):
   raw/*.csv         small FOPH availability files, kept as published
   _inspect.txt      headers of every source file, for checking
 """
-import csv, io, json, re, sys, time, zipfile, hashlib, datetime, pathlib
+import csv, io, json, math, re, sys, time, zipfile, hashlib, datetime, pathlib
 import requests
 from openpyxl import load_workbook
 
@@ -22,6 +22,7 @@ YEAR = 2027
 CKAN = "https://ckan.opendata.swiss/api/3/action/package_show?id=health-insurance-premiums"
 PRIMINFO = "https://www.priminfo.admin.ch"
 DEDS = [300, 500, 1000, 1500, 2000, 2500]
+CANTONS = set("AG AI AR BE BL BS FR GE GL GR JU LU NE NW OW SG SH SO SZ TG TI UR VD VS ZG ZH".split())
 TYPE_2026 = {"TAR-BASE": "BASE", "TAR-HAM": "PRAXIS", "TAR-HMO": "PRAXIS", "TAR-DIV": "FLEX"}
 inspect = []
 
@@ -81,6 +82,8 @@ def premium_groups(csv_text, label):
         age = "E" if "ERW" in akl else "J" if "JUG" in akl else None
         if not age:
             continue  # children are not covered yet
+        if f[ix["Kanton"]] not in CANTONS:
+            continue  # FOPH special codes, not cantons
         reg = int(re.search(r"(\d)\s*$", f[ix["Region"]]).group(1))
         acc = "M" if "MIT" in f[ix["Unfalleinschluss"]] else "O"
         ded = int(re.search(r"(\d+)$", f[ix["Franchise"]]).group(1))
@@ -168,11 +171,13 @@ def main():
             d = [None if (a is None or prev["p"].get(dd) is None) else a - prev["p"][dd] for a, dd in zip(p, DEDS)]
             nn = [x for x in d if x is not None]
             if nn and max(nn) - min(nn) <= 20:
-                dstr = "d" + str(round(sum(nn) / len(nn) / 5) * 5)
+                dstr = "d" + str(math.floor(sum(nn) / len(nn) / 5 + 0.5) * 5)
             elif nn:
                 dstr = " ".join("-" if x is None else str(x) for x in d)
         per_canton.setdefault(kt, []).append(f"{tids[(ins, tar)][0]},{age},{reg},{acc},{pstr},{dstr}")
 
+    for old in (OUT / "cantons").glob("*.txt"):
+        old.unlink()
     sums = {}
     for kt, lines in per_canton.items():
         body = "\n".join(lines) + "\n"
