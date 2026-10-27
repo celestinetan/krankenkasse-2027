@@ -1,0 +1,9 @@
+{
+ "year": 2027,
+ "built": "interim: canton Zurich only, verified by checksum on 27 Oct 2026",
+ "cantons": {
+  "ZH": {
+   "rows": 1536
+  }
+ }
+}

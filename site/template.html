@@ -1,0 +1,383 @@
+<title>Krankenkasse 2027 Schweiz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: four numbered steps on the left (your plan, your bills, how you see doctors, about you); the answer and the evidence on the right. Stacks on phones. Ink on cool paper, petrol accent, numbers in mono. */
+:root{
+  --bg:#F3F5F6; --surface:#FFFFFF; --sunk:#E9EDEF; --ink:#15202B; --muted:#5A6772; --line:#D8DFE3;
+  --accent:#0F5C6E; --accent-ink:#FFFFFF; --accent-soft:#E1EEF1;
+  --good:#1D7A4C; --good-soft:#E3F3EA; --warn:#9A6300; --warn-soft:#FBF0DA; --bad:#B3261E; --bad-soft:#FBE7E5;
+  --c1:#0F5C6E; --c2:#2F7FD0; --c3:#6E9A2E; --c4:#C2751D; --c5:#B0407A; --c6:#5C5E99;
+  --display:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --body:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1417; --surface:#151D21; --sunk:#1B252A; --ink:#E5EBEE; --muted:#93A2AB; --line:#283439;
+  --accent:#5BC0D4; --accent-ink:#06262E; --accent-soft:#12313A;
+  --good:#5CC991; --good-soft:#15322A; --warn:#E3AE4B; --warn-soft:#352A12; --bad:#F2786E; --bad-soft:#3A1C1A;
+  --c1:#5BC0D4; --c2:#7AB2F2; --c3:#A5CC5E; --c4:#EDA65A; --c5:#E57DB4; --c6:#A3A6E6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1417; --surface:#151D21; --sunk:#1B252A; --ink:#E5EBEE; --muted:#93A2AB; --line:#283439;
+  --accent:#5BC0D4; --accent-ink:#06262E; --accent-soft:#12313A;
+  --good:#5CC991; --good-soft:#15322A; --warn:#E3AE4B; --warn-soft:#352A12; --bad:#F2786E; --bad-soft:#3A1C1A;
+  --c1:#5BC0D4; --c2:#7AB2F2; --c3:#A5CC5E; --c4:#EDA65A; --c5:#E57DB4; --c6:#A3A6E6; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;line-height:1.15}
+h1{font-size:clamp(1.6rem,3.2vw,2.3rem);font-weight:700;letter-spacing:-.01em}
+h2{font-size:1.15rem;font-weight:700}
+h3{font-size:1rem;font-weight:600}
+p{margin:0}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eyebrow{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)} .small{font-size:.86rem}
+a{color:var(--accent)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.mast{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;padding-bottom:16px;border-bottom:2px solid var(--ink)}
+.mast .lede{max-width:60ch;color:var(--muted);margin-top:8px}
+.deadline{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
+.deadline .days{font-family:var(--mono);font-size:1.9rem;font-weight:500;line-height:1;color:var(--accent)}
+.deadline .lbl{font-size:.82rem;line-height:1.3}
+
+.grid{display:grid;grid-template-columns:330px minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:minmax(0,1fr)}}
+.rail{display:flex;flex-direction:column;gap:14px}
+.main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.step{display:flex;gap:10px;align-items:baseline}
+.step .n{font-family:var(--mono);font-size:.8rem;color:var(--accent-ink);background:var(--accent);border-radius:999px;min-width:22px;height:22px;display:inline-grid;place-items:center;flex:none}
+.field{display:flex;flex-direction:column;gap:5px}
+.field > label,.flabel{font-size:.84rem;font-weight:600}
+.hint{font-size:.8rem;color:var(--muted);line-height:1.4}
+input[type=text],input[type=number],select{background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 10px;width:100%;min-width:0}
+input[type=number]{font-family:var(--mono)}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button,.chipbtn{border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px;font-size:.84rem;cursor:pointer}
+.seg button[aria-pressed="true"],.chipbtn[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.choices{display:flex;flex-direction:column;gap:6px}
+.choices button{display:flex;flex-direction:column;align-items:flex-start;text-align:left;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:9px 12px;cursor:pointer;gap:1px}
+.choices button span{font-size:.78rem;color:var(--muted)}
+.choices button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 3px 0 0 var(--accent)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q{display:flex;flex-direction:column;gap:6px;padding-top:10px;border-top:1px solid var(--line)}
+.q:first-of-type{border-top:0;padding-top:0}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:.86rem}
+.check input{margin-top:3px;accent-color:var(--accent)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+details summary{cursor:pointer;font-size:.84rem;color:var(--accent);font-weight:600}
+details[open] summary{margin-bottom:8px}
+.note{border-radius:8px;padding:9px 11px;font-size:.84rem;line-height:1.45}
+.note.warn{background:var(--warn-soft);border-left:3px solid var(--warn)}
+.note.good{background:var(--good-soft);border-left:3px solid var(--good)}
+.note.info{background:var(--accent-soft);border-left:3px solid var(--accent)}
+.note.bad{background:var(--bad-soft);border-left:3px solid var(--bad)}
+
+/* verdict */
+.verdict{border:2px solid var(--accent);border-radius:14px;background:var(--surface);padding:18px;display:flex;flex-direction:column;gap:16px}
+.vhead{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;align-items:flex-start}
+.vhead .say{font-family:var(--display);font-size:clamp(1.2rem,2.2vw,1.5rem);font-weight:700;line-height:1.25;max-width:40ch;text-wrap:balance}
+.vsave{text-align:right}
+.vsave .v{font-family:var(--mono);font-size:1.8rem;line-height:1;color:var(--good)}
+.vsave .s{font-size:.8rem;color:var(--muted)}
+.actions{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.chk{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;background:var(--bg);min-width:0}
+.chk .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pill{font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.pill.do{background:var(--accent);color:var(--accent-ink)}
+.pill.ok{background:var(--good-soft);color:var(--good)}
+.pill.opt{background:var(--warn-soft);color:var(--warn)}
+.chk .fig{font-family:var(--mono);font-size:1.05rem;overflow-wrap:anywhere}
+.chk p{font-size:.88rem}
+
+/* plans */
+.listhead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:10px}
+.plans{display:flex;flex-direction:column}
+.plan{display:grid;grid-template-columns:30px minmax(0,2.4fr) 86px 100px 112px 120px 40px;gap:10px;align-items:center;padding:11px 8px;border-top:1px solid var(--line)}
+.plan.head{border-top:0;padding-block:4px 8px;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.plan.head > div{text-align:right}.plan.head > div:nth-child(1),.plan.head > div:nth-child(2){text-align:left}
+.plan .r{text-align:right}
+.plan.base{background:var(--accent-soft);border-radius:8px;border-top-color:transparent}
+.plan.base + .plan{border-top-color:transparent}
+.plan.poor{opacity:.55}
+.rank{font-family:var(--mono);color:var(--muted);font-size:.85rem}
+.pname{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pname .ins{font-weight:600}
+.pname .mdl{font-size:.86rem}
+.pname .rule{font-size:.78rem;color:var(--muted)}
+.pname .fitn{font-size:.78rem;color:var(--warn)}
+.plan.poor .pname .fitn{color:var(--bad)}
+.tag{display:inline-block;font-size:.68rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;border-radius:4px;padding:1px 6px;margin-right:6px;vertical-align:1px;background:var(--sunk);color:var(--muted)}
+.tag.you{background:var(--ink);color:var(--bg)}
+.cell-big{font-family:var(--mono);font-size:1rem;font-weight:500}
+.cell-sub{font-size:.76rem;color:var(--muted)}
+.delta.up{color:var(--bad)} .delta.down{color:var(--good)} .delta.flat{color:var(--muted)}
+.vsb{font-family:var(--mono);font-size:.84rem}
+.vsb.save{color:var(--good)} .vsb.more{color:var(--bad)}
+.pin{width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--bg);cursor:pointer;display:grid;place-items:center}
+.pin[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.pin svg{width:16px;height:16px}
+.lbl-m{display:none}
+@media (max-width:760px){
+  .plan.head{display:none}
+  .plan{grid-template-columns:26px minmax(0,1fr) 40px;grid-template-areas:"rk nm pn" ". ded ded" ". prem prem" ". yoy yoy" ". tco tco";row-gap:4px}
+  .plan > .rank{grid-area:rk}.plan > .pname{grid-area:nm}.plan > .pinc{grid-area:pn}
+  .plan > .c-ded{grid-area:ded}.plan > .c-prem{grid-area:prem}.plan > .c-yoy{grid-area:yoy}.plan > .c-tco{grid-area:tco}
+  .plan .r{text-align:left;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+  .lbl-m{display:inline;font-size:.74rem;color:var(--muted);min-width:110px}
+}
+.morebtn{align-self:flex-start;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 12px;cursor:pointer;margin-top:10px}
+
+.cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.ccard{border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px;min-width:0;background:var(--bg)}
+.ccard.base{border-color:var(--accent)}
+.ccard dl{display:grid;grid-template-columns:auto 1fr;gap:3px 10px;margin:0;font-size:.86rem}
+.ccard dt{color:var(--muted)} .ccard dd{margin:0;text-align:right;font-family:var(--mono)}
+.empty{border:1px dashed var(--line);border-radius:10px;padding:14px;color:var(--muted);font-size:.86rem}
+
+.chartwrap{overflow-x:auto}
+svg.chart{display:block;width:100%;min-width:520px;height:auto}
+.chart text{fill:var(--muted);font-family:var(--mono);font-size:11px}
+.chart .grid line{stroke:var(--line)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.82rem}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:14px;height:3px;border-radius:2px;display:inline-block}
+
+.perkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.perkcat{display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--ink);padding-top:8px;min-width:0}
+.perk{font-size:.86rem;display:flex;flex-direction:column;gap:2px}
+.perk .prod{font-size:.72rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--accent)}
+.perk .cond{font-size:.78rem;color:var(--muted)}
+
+.steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}
+.steps li{display:flex;gap:10px;align-items:flex-start;font-size:.9rem}
+.steps input{margin-top:4px;accent-color:var(--accent);width:16px;height:16px}
+.letter{white-space:pre-wrap;font-family:var(--mono);font-size:.8rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px;max-height:340px;overflow:auto}
+.btn{border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink);border-radius:8px;padding:8px 14px;cursor:pointer;font-weight:600}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+/* tabs */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--line);margin-top:-8px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;padding:12px 14px 10px;text-decoration:none;color:var(--muted);font-weight:600;font-size:.95rem;border-bottom:3px solid transparent;white-space:nowrap}
+.tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tabs a:hover{color:var(--ink)}
+.tabpanel{display:flex;flex-direction:column;gap:20px}
+.stephead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.editbtn{border:1px solid var(--line);background:var(--bg);border-radius:8px;padding:4px 12px;font-size:.82rem;cursor:pointer;color:var(--accent);font-weight:600;flex:none}
+.stepsum{font-size:.88rem;margin:-4px 0 0 32px}
+.sbody{display:flex;flex-direction:column;gap:12px}
+.links{display:flex;flex-wrap:wrap;gap:8px}
+.links a{border:1px solid var(--accent);color:var(--accent);border-radius:8px;padding:7px 12px;text-decoration:none;font-weight:600;font-size:.86rem}
+.links a.primary{background:var(--accent);color:var(--accent-ink)}
+footer{font-size:.8rem;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+@media (prefers-reduced-motion:no-preference){.plan,.pin,.seg button,.choices button{transition:background-color .15s ease}}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <div>
+      <div class="eyebrow">Basic health insurance (Grundversicherung) · All 26 cantons · 2027</div>
+      <h1>Krankenkasse 2027 Schweiz</h1>
+      <p class="lede">Answer four quick questions and see what the numbers suggest for 2027: keep your plan, change your deductible, change model, or switch insurer. Every price is the official 2027 premium from the Federal Office of Public Health.</p>
+      <p class="hint" style="margin-top:6px">Information tool, not advice · Prices: FOPH, published 29 Sep 2026 · Perks checked 27 Oct 2026 · Version 2.0 · <a href="#about">About this page</a></p>
+    </div>
+    <div class="deadline" id="deadline"></div>
+  </header>
+  <nav class="tabs" aria-label="Sections" id="tabs">
+    <a href="#answer" data-tab="answer">My answer</a><a href="#compare" data-tab="compare">Compare plans</a><a href="#perks" data-tab="perks">Perks</a><a href="#switch" data-tab="switch">Switch</a><a href="#about" data-tab="about">About</a>
+  </nav>
+
+  <div class="tabpanel" id="tab-answer" data-panel="answer">
+  <div class="grid">
+    <aside class="rail">
+      <section class="panel" aria-labelledby="h-s1">
+        <div class="stephead"><div class="step"><span class="n">1</span><h2 id="h-s1">Your plan now</h2></div><button type="button" class="editbtn" id="t1" aria-expanded="true" aria-controls="b1">Done</button></div><p class="stepsum" id="sum1" hidden></p><div class="sbody" id="b1">
+        <div class="field">
+          <label for="kt">Your canton</label>
+          <select id="kt"></select>
+        </div>
+        <div class="field">
+          <label for="bins">Your insurer</label>
+          <select id="bins"></select>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="bded">Deductible</label>
+            <select id="bded"></select>
+          </div>
+          <div class="field">
+            <label for="paid">You pay, CHF/month</label>
+            <input id="paid" type="number" step="0.05" min="0" placeholder="e.g. 480.35">
+          </div>
+        </div>
+        <div class="hint">Basic insurance only (KVG/LAMal). Leave out extras such as TOP, SANA or hospital cover. Your insurer's app or bill shows it on its own line.</div>
+        <div class="seg" id="pyear" role="group" aria-label="Which year is this amount from">
+          <button type="button" data-v="2026">From my 2026 bill</button><button type="button" data-v="2027">From my 2027 letter</button>
+        </div>
+        <div class="field">
+          <label for="plz">Postcode <span class="muted" style="font-weight:400">(sets canton and region)</span></label>
+          <input id="plz" type="text" inputmode="numeric" maxlength="4" placeholder="e.g. 8004" autocomplete="postal-code">
+        </div>
+        <div id="finder"></div>
+        <details id="manual">
+          <summary>Set my plan by hand</summary>
+          <div class="field">
+            <label for="bmodel">Model</label>
+            <select id="bmodel"></select>
+          </div>
+        </details></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s2">
+        <div class="stephead"><div class="step"><span class="n">2</span><h2 id="h-s2">Your doctor bills in a year</h2></div><button type="button" class="editbtn" id="t2" aria-expanded="true" aria-controls="b2">Done</button></div><p class="stepsum" id="sum2" hidden></p><div class="sbody" id="b2">
+        <p class="hint">Think of a normal year: what doctors, pharmacy and hospital billed in total. Your insurer's yearly statement shows it.</p>
+        <div class="choices" id="preset">
+          <button type="button" data-v="300">Only check-ups<span>under CHF 500 a year</span></button>
+          <button type="button" data-v="1500">A few visits<span>about CHF 1,500 a year</span></button>
+          <button type="button" data-v="4000">Regular treatment<span>about CHF 4,000 a year</span></button>
+          <button type="button" data-v="8500">I always hit the CHF 700 cap<span>CHF 7,500 or more a year; you pay the full deductible and the maximum co-pay</span></button>
+        </div>
+        <details>
+          <summary>Fine-tune: <span id="spendval" class="num"></span></summary>
+          <input id="spend" type="range" min="0" max="12000" step="100" aria-label="Yearly doctor bills in CHF">
+        </details></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s3">
+        <div class="stephead"><div class="step"><span class="n">3</span><h2 id="h-s3">How you like to see doctors</h2></div><button type="button" class="editbtn" id="t3" aria-expanded="true" aria-controls="b3">Done</button></div><p class="stepsum" id="sum3" hidden></p><div class="sbody" id="b3">
+        <p class="hint">Cheaper models come with rules. Your answers flag the ones that would not suit you.</p>
+        <div class="q"><span class="flabel">Do you have a GP you want to keep?</span><div class="seg" id="hasGP" role="group" aria-label="Have a GP"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div>
+        <div class="q"><span class="flabel">Are you OK phoning a hotline or using an app before every visit?</span><div class="seg" id="phoneOK" role="group" aria-label="Phone first"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div>
+        <div class="q"><span class="flabel">Do you see specialists often?</span><div class="seg" id="specialists" role="group" aria-label="Specialists"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div></div></div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-s4">
+        <div class="stephead"><div class="step"><span class="n">4</span><h2 id="h-s4">About you</h2></div><button type="button" class="editbtn" id="t4" aria-expanded="true" aria-controls="b4">Done</button></div><p class="stepsum" id="sum4" hidden></p><div class="sbody" id="b4">
+        <div class="q"><span class="flabel">Age</span><div class="seg" id="age" role="group" aria-label="Age"><button type="button" data-v="E">26 or older</button><button type="button" data-v="J">19 to 25</button></div></div>
+        <div class="q" id="regwrap"><span class="flabel">Premium region</span><div class="seg" id="region" role="group" aria-label="Premium region"></div></div><div class="hint" id="reghint"></div>
+        <div class="q"><span class="flabel">Do you work 8+ hours a week for one employer?</span><div class="seg" id="work" role="group" aria-label="Employment"><button type="button" data-v="yes">Yes</button><button type="button" data-v="no">No</button></div>
+          <label class="check" for="acc"><input type="checkbox" id="acc"> <span>Include accident cover</span></label>
+          <div class="hint" id="acchint"></div></div></div>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="verdict" aria-labelledby="h-verdict" id="verdict"></section>
+    </main>
+  </div>
+  </div>
+  <div class="tabpanel" id="tab-compare" data-panel="compare" hidden>
+<section class="panel" aria-labelledby="h-plans">
+        <div class="listhead">
+          <div>
+            <h2 id="h-plans">All plans, cheapest first</h2>
+            <p class="small muted" id="plansub"></p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="field" style="min-width:170px"><label for="insf">Insurer</label><select id="insf"></select></div>
+            <div class="field" style="min-width:170px"><label for="dedmode">Deductible</label><select id="dedmode"></select></div>
+          </div>
+        </div>
+        <div class="field"><span class="flabel">Models</span><div class="seg" id="models" role="group" aria-label="Model filter"></div></div>
+        <div class="plans" id="plans"></div>
+        <button type="button" class="morebtn" id="more"></button>
+      </section>
+<section class="panel" aria-labelledby="h-cmp">
+        <h2 id="h-cmp">Side by side</h2>
+        <p class="small muted">Tap the pin on up to 4 plans to compare them with yours.</p>
+        <div class="cmp" id="cmp"></div>
+      </section>
+<section class="panel" aria-labelledby="h-chart">
+        <div class="listhead">
+          <div>
+            <h2 id="h-chart">Which deductible pays off?</h2>
+            <p class="small muted">Yearly cost of one plan at each deductible as bills grow. The dashed line is your answer to step 2.</p>
+          </div>
+          <div class="field" style="min-width:220px"><label for="chartplan">Plan</label><select id="chartplan"></select></div>
+        </div>
+        <div class="chartwrap"><svg class="chart" id="chart" viewBox="0 0 760 340" role="img" aria-label="Yearly cost by deductible"></svg></div>
+        <div class="legend" id="legend"></div>
+        <p class="small" id="chartnote"></p>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-perks" data-panel="perks" hidden>
+<section class="panel" aria-labelledby="h-perks">
+        <div class="listhead">
+          <div>
+            <h2 id="h-perks">Perks and extras</h2>
+            <p class="small muted">Gym, massage, glasses and similar come from extras (supplementary insurance), never from basic. Extras and basic can be with different insurers.</p>
+          </div>
+          <div class="field" style="min-width:200px"><label for="perkins">Insurer</label><select id="perkins"></select></div>
+        </div>
+        <div id="perks"></div>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-switch" data-panel="switch" hidden>
+<section class="panel" aria-labelledby="h-switch">
+        <h2 id="h-switch">How to switch for 2027</h2>
+        <div class="two">
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <ul class="steps" id="steps"></ul>
+            <div class="note info">Your old basic insurance only ends once the new insurer confirms you are covered. Nothing lapses in between.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+            <div class="row2">
+              <div class="field"><label for="lname">Your name</label><input id="lname" type="text" autocomplete="name"></div>
+              <div class="field"><label for="lnum">Policy number</label><input id="lnum" type="text"></div>
+            </div>
+            <div class="field"><label for="laddr">Your address</label><input id="laddr" type="text" autocomplete="street-address" placeholder="Street, postcode, town"></div>
+            <div class="seg" id="lang" role="group" aria-label="Letter language"><button type="button" data-v="de">German (send this)</button><button type="button" data-v="en">English translation</button></div>
+            <div class="letter" id="letter"></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button type="button" class="btn" id="copy">Copy letter</button><span class="small muted" id="copied" role="status"></span></div>
+            <p class="hint">Send it by registered post (Einschreiben) or A-Post Plus so it arrives by 30 November. Check the address against your policy. Your details stay in this browser.</p>
+          </div>
+        </div>
+      </section>
+  </div>
+  <div class="tabpanel" id="tab-about" data-panel="about" hidden>
+<section class="panel" aria-labelledby="h-about">
+        <h2 id="h-about">About this page</h2>
+        <div class="two">
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0;max-width:65ch">
+            <div><h3>What it is</h3><p class="small">A free, independent tool that compares the official 2027 basic health insurance premiums in all 26 Swiss cantons and works out what a year would cost for the answers you give. It is not affiliated with any health insurer or with the Federal Office of Public Health, earns no commissions and does not arrange insurance. Insurer names and trademarks belong to their owners.</p></div>
+            <div><h3>Not advice</h3><p class="small">Everything here is general information, not insurance, financial, legal or medical advice. The suggestions follow fixed rules applied to official prices. They don't know your full situation, your doctors or your health, and you make the decision. Before you change anything, check the figures on <a href="https://www.priminfo.admin.ch/de/praemien" target="_blank" rel="noopener">priminfo.admin.ch</a> or with the insurer. The insurer's own documents and terms always take precedence.</p></div>
+            <div><h3>No guarantee</h3><p class="small">The page was built with care, but the figures, rules and perk details may be incomplete, out of date or wrong. Use it at your own risk. To the extent the law allows, the author accepts no liability for losses or decisions based on this page. By using it, you agree to hold the author harmless from any claim arising from your use of it.</p></div>
+            <div><h3>Your privacy</h3><p class="small">What you type, including your premium and the letter details, is stored only in this browser so the page remembers it. Nothing is sent to the author or anyone else. Clearing this site's data in your browser removes it.</p></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:14px;min-width:0;max-width:65ch">
+            <div><h3>Known limits</h3><ul class="small" style="margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:4px">
+              <li>All 26 cantons, for ages 19 to 25 and 26+. Children are not included. The page is in English, with German terms.</li>
+              <li>Yearly cost uses the legal adult rules for deductible and the 10% co-pay (capped at CHF 700). The CHF 15/day hospital contribution is left out.</li>
+              <li>Matching what you pay to a plan allows for the CO2 levy refund of about CHF 5 a month on 2026 bills. Discounts or special policies can stop a match.</li>
+              <li>Whether a model "suits you" rests on three simple questions. Every insurer's model has its own detailed rules.</li>
+              <li>Deadlines: changing insurer or lowering a deductible must reach your insurer by 30 November. Other changes can differ by insurer.</li>
+              <li>Perks come from insurers' public pages and cover 13 insurers. Some documents are from 2025 or earlier.</li>
+            </ul></div>
+            <div><h3>Sources and version</h3><p class="small">Premiums: FOPH dataset "Krankenversicherungsprämien" on opendata.swiss, 2027 and 2026, all cantons, published 29 September 2026. Premium regions: priminfo.admin.ch, valid from 1 January 2027. Insurer names: FOPH list of admitted insurers. Perks: checked 27 October 2026. Version 2.0.</p></div>
+            <div><h3>Spotted a mistake?</h3><p class="small">Please report it so it can be fixed: <span class="num" id="contact" style="user-select:all"></span></p></div>
+          </div>
+        </div>
+      </section>
+  </div>
+  <footer>
+        <p><strong>Data:</strong> Federal Office of Public Health (BAG/FOPH), approved premiums for 2027 and 2026 in all 26 cantons, dataset "Krankenversicherungsprämien" on opendata.swiss, published 29 September 2026. Premium regions by postcode from priminfo.admin.ch, valid from 1.1.2027. Insurer names from the FOPH list of admitted insurers. <span id="databuilt"></span></p>
+        <p><strong>How yearly cost is worked out:</strong> 12 months of premium, plus your bills up to the deductible, plus 10% of the rest up to CHF 700 a year (legal adult rules). The CHF 15/day hospital contribution is left out because it is the same everywhere. Bills on 2026 statements are reduced by the CO2 levy refund, about CHF 5 a month, which is why your bill can be a little lower than the listed premium.</p>
+        <p><strong>How the suggestions work:</strong> fixed rules on the official prices. A switch saving under CHF 100 a year is shown as a tiny saving, CHF 100 to 300 as a small saving. Models you said would not suit you are never recommended. Year-on-year change compares the same model at the same deductible; renamed or new models show "new".</p>
+        <p><strong>Perks:</strong> collected in October 2026 from each insurer's own pages, linked beside every entry. Some documents are from 2025 or earlier and insurers change extras every year, so confirm amounts before relying on them. Smaller insurers are not covered yet.</p>
+        <p>This page is an information tool, not insurance or financial advice. <a href="#about">About this page, limits and privacy</a>. Check the final figure on <a href="https://www.priminfo.admin.ch/de/praemien" target="_blank" rel="noopener">priminfo.admin.ch</a> or with the insurer before you switch.</p>
+      </footer>
+</div>
+
+<script>
+const PERKS = __PERKS__;
+__LOGIC__
+__UI__
+</script>

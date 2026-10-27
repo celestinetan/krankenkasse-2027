@@ -1,0 +1,39 @@
+name: Update premium data
+
+# Downloads the official FOPH premiums and priminfo postcode regions,
+# rebuilds data/ and commits the result. Runs when the script changes,
+# or by hand from the Actions tab ("Run workflow").
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/build_data.py"
+      - ".github/workflows/update-data.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests==2.32.3 openpyxl==3.1.5
+      - run: python scripts/build_data.py
+      - name: Commit data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then echo "No data changes"; exit 0; fi
+          git commit -m "Update premium data from FOPH and priminfo"
+          git push
