@@ -1,0 +1,21 @@
+CKAN resources: to whom it may concern.pdf, Versichertenbestand_CH.xlsx, Versichertenbestand_CH.csv, Tarife.xlsx, Tarife.csv, Prämien_CH.csv, Prämien_CH.xlsx, Prämien_CHEU.xlsx, Prämien_EU.xlsx, Prämien_EU.csv, Erläuterungen zu den Prämiendaten.xlsx, Einzugsgebiete.xlsx, Einzugsgebiete.csv, Eingeschr.-Tät.gebiete.xlsx, Eingeschr.-Tät.gebiete.csv, Archiv_Praemien_2026.zip, Archiv_Praemien_2025.zip, Archiv_Praemien_2024.zip, Archiv_Praemien_2023.zip, Archiv_Praemien_2022.zip, Archiv_Praemien_2021.zip, Archiv_Praemien_2020.zip, Archiv_Praemien_2019.zip, Archiv_Praemien_2018.zip, Archiv_Praemien_2017.zip, Archiv_Praemien_2016.zip, Archiv_Praemien_2015.zip, Archiv_Praemien_2014.zip, Archiv_Praemien_2013.zip, Archiv_Praemien_2012.zip, Archiv_Praemien_2011.zip
+
+Prämien_CH.csv (2027): 219916 rows, sep ','
+  header: ['Versicherer', 'Kanton', 'Hoheitsgebiet', 'Geschäftsjahr', 'Erhebungsjahr', 'Region', 'Altersklasse', 'Unfalleinschluss', 'Tarif', 'Tariftyp', 'Altersuntergruppe', 'Franchisestufe', 'Franchise', 'Prämie', 'isBaseP', 'isBaseF', 'Tarifbezeichnung']
+  first: ['8', 'AG', 'P_OKPCH', '2027', '2026', 'PR_REG_0', 'AKA_03_ERW', 'MIT_UNF', '01_016', 'PRAXIS', 'E1', 'FRASTU_01', 'FRA_01_E_0300', '549.5', '0', '1', 'Gesundheitspraxisversicherung']
+
+Prämien_CH.csv (2026): 217472 rows, sep ','
+  header: ['Versicherer', 'Kanton', 'Hoheitsgebiet', 'Geschäftsjahr', 'Erhebungsjahr', 'Region', 'Altersklasse', 'Unfalleinschluss', 'Tarif', 'Tariftyp', 'Altersuntergruppe', 'Franchisestufe', 'Franchise', 'Prämie', 'isBaseP', 'isBaseF', 'Tarifbezeichnung']
+  first: ['8', 'AG', 'CH', '2026', '2025', 'PR-REG CH0', 'AKL-KIN', 'MIT-UNF', '01_016', 'TAR-HAM', 'K1', 'FRAST1', 'FRA-0', '120.3', '0', '1', 'Gesundheitspraxisversicherung']
+
+Einzugsgebiete.csv: 3964 rows, sep ','
+  header: ['Versicherer', 'Kanton', 'Hoheitsgebiet', 'Geschäftsjahr', 'Erhebungsjahr', 'Region', 'Tarif', 'Tariftyp', 'Eingeschränkt', 'Gemeinden-BFS']
+  first: ['8', 'AG', 'P_OKPCH', '2027', '2026', 'PR_REG_0', '01_016', 'PRAXIS', 'N', '']
+
+Eingeschr.-Tät.gebiete.csv: kept as published in data/raw/
+
+restricted models: 10
+
+insurers: 32 used, 0 without a name
+
+postcodes: 4211 entries, sheet B_NPA
