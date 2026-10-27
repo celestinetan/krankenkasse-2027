@@ -1,13 +1,13 @@
 {
  "year": 2027,
- "built": "2026-10-27 12:29 UTC",
+ "built": "2026-10-27 12:30 UTC",
  "source": "FOPH/BAG Krankenversicherungspraemien (opendata.swiss); priminfo.admin.ch",
  "tariffs": 153,
  "insurers": 32,
  "cantons": {
   "AG": {
    "rows": 532,
-   "sha256": "6c72252f79a7ec59"
+   "sha256": "f15979f91ab84796"
   },
   "AI": {
    "rows": 460,
@@ -19,11 +19,11 @@
   },
   "BE": {
    "rows": 1552,
-   "sha256": "a386d2f5eeb76100"
+   "sha256": "7231aaac1bdaf56f"
   },
   "BL": {
    "rows": 928,
-   "sha256": "5d8c87018aee95d2"
+   "sha256": "a14090bcc30e1d8e"
   },
   "BS": {
    "rows": 468,
@@ -31,7 +31,7 @@
   },
   "FR": {
    "rows": 924,
-   "sha256": "66be7e9defdd244a"
+   "sha256": "f2e018cdae4cf60a"
   },
   "GE": {
    "rows": 424,
@@ -43,7 +43,7 @@
   },
   "GR": {
    "rows": 1404,
-   "sha256": "ef2aa9f9c912ed0c"
+   "sha256": "773033148a3fb8bc"
   },
   "JU": {
    "rows": 420,
@@ -51,31 +51,31 @@
   },
   "LU": {
    "rows": 1472,
-   "sha256": "56c6331b9c3fb738"
+   "sha256": "e72b6eae1af98f01"
   },
   "NE": {
    "rows": 428,
-   "sha256": "c06705f0cae2a581"
+   "sha256": "f0f49f4dd45307c9"
   },
   "NW": {
    "rows": 488,
-   "sha256": "ec4dd45a32648bb7"
+   "sha256": "bd5ef52e0febeecc"
   },
   "OW": {
    "rows": 468,
-   "sha256": "98dac709fb8e4331"
+   "sha256": "b0238460aced0c4d"
   },
   "SG": {
    "rows": 1464,
-   "sha256": "dcdb1bd9c866af30"
+   "sha256": "5a3890a831c9241d"
   },
   "SH": {
    "rows": 924,
-   "sha256": "bd541637c36725c8"
+   "sha256": "c6291bbf63a9415f"
   },
   "SO": {
    "rows": 504,
-   "sha256": "9441257764303665"
+   "sha256": "87208397c9d01885"
   },
   "SZ": {
    "rows": 508,
@@ -83,11 +83,11 @@
   },
   "TG": {
    "rows": 472,
-   "sha256": "540e910e1d2829f9"
+   "sha256": "c5890e5269c8cfa1"
   },
   "TI": {
    "rows": 840,
-   "sha256": "64fbe86e3092758e"
+   "sha256": "a1a1c50ac5f53b7f"
   },
   "UR": {
    "rows": 488,
@@ -95,27 +95,19 @@
   },
   "VD": {
    "rows": 848,
-   "sha256": "79e470feb1c3af0c"
+   "sha256": "b6b11b72796ed377"
   },
   "VS": {
    "rows": 944,
    "sha256": "5f78505e00edf8be"
   },
-  "ZE": {
-   "rows": 24,
-   "sha256": "adbeaec43df0727f"
-  },
   "ZG": {
    "rows": 500,
-   "sha256": "82ca50efc0725b47"
+   "sha256": "4ab0a655dc052d0a"
   },
   "ZH": {
    "rows": 1536,
-   "sha256": "64ee1da0a23c4c20"
-  },
-  "ZR": {
-   "rows": 12,
-   "sha256": "cb65cc77cca22dd1"
+   "sha256": "325ce1e7e22ea02e"
   }
  }
 }
